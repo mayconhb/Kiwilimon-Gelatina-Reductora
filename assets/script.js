@@ -384,33 +384,28 @@
         }
         if (state.step === 17) {
             let buttonShown = false;
-            let attempts = 0;
             
-            const startWatchVideoProgress = function() {
-                if (typeof smartplayer === 'undefined' || !(smartplayer.instances && smartplayer.instances.length)) {
-                    if (attempts >= 30) return;
-                    attempts++;
-                    return setTimeout(startWatchVideoProgress, 1000);
-                }
+            window.addEventListener('message', function handleVturbMessage(event) {
+                if (buttonShown) return;
                 
-                const player = smartplayer.instances[0];
-                
-                player.on('timeupdate', function() {
-                    if (buttonShown) return;
+                try {
+                    const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+                    console.log('VTurb message:', data);
                     
-                    const currentTime = player.getCurrentTime();
+                    const currentTime = data.currentTime || data.time || data.playedSeconds || 
+                                        (data.data && data.data.currentTime) ||
+                                        (data.data && data.data.time);
                     
-                    if (currentTime >= 10 && !buttonShown) {
+                    if (currentTime && currentTime >= 10) {
                         buttonShown = true;
                         const ctaButton = document.getElementById('cta-button');
                         if (ctaButton) {
                             ctaButton.style.display = 'flex';
                         }
+                        window.removeEventListener('message', handleVturbMessage);
                     }
-                });
-            };
-            
-            startWatchVideoProgress();
+                } catch (e) {}
+            });
         }
     }
 
