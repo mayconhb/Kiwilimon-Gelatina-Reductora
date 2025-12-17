@@ -390,19 +390,19 @@
                 
                 try {
                     const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-                    console.log('VTurb message:', data);
                     
-                    const currentTime = data.currentTime || data.time || data.playedSeconds || 
-                                        (data.data && data.data.currentTime) ||
-                                        (data.data && data.data.time);
-                    
-                    if (currentTime && currentTime >= 10) {
-                        buttonShown = true;
-                        const ctaButton = document.getElementById('cta-button');
-                        if (ctaButton) {
-                            ctaButton.style.display = 'flex';
+                    if (data.type === 'videoTimeUpdate' && data.payload) {
+                        const currentTime = data.payload.currentTime || data.payload.time || data.payload;
+                        console.log('VTurb time:', currentTime);
+                        
+                        if (currentTime >= 10) {
+                            buttonShown = true;
+                            const ctaButton = document.getElementById('cta-button');
+                            if (ctaButton) {
+                                ctaButton.style.display = 'flex';
+                            }
+                            window.removeEventListener('message', handleVturbMessage);
                         }
-                        window.removeEventListener('message', handleVturbMessage);
                     }
                 } catch (e) {}
             });
