@@ -363,12 +363,22 @@
             setupLoadingLogic();
         }
         if (state.step === 17) {
-            setTimeout(() => {
-                const ctaButton = document.getElementById('cta-button');
-                if (ctaButton) {
-                    ctaButton.style.display = 'flex';
-                }
-            }, 10000);
+            window.addEventListener('message', function handleVideoMessage(event) {
+                try {
+                    const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+                    const currentTime = data.currentTime || data.time || data.playedSeconds || 
+                                        (data.info && data.info.currentTime) || 
+                                        (data.data && data.data.currentTime);
+                    
+                    if (currentTime && currentTime >= 10) {
+                        const ctaButton = document.getElementById('cta-button');
+                        if (ctaButton) {
+                            ctaButton.style.display = 'flex';
+                        }
+                        window.removeEventListener('message', handleVideoMessage);
+                    }
+                } catch (e) {}
+            });
         }
     }
 
