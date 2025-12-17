@@ -346,10 +346,9 @@
                     <div style="position:relative;width:100%;max-width:400px;aspect-ratio:9/16;margin:0 auto;">
                         <iframe src="https://vslpro.com.br/play.php?id=20251217213035-208f8d&rv=4f361a6e&vp=0&pbg=%230025db&ptri=%23ffffff&rs=txt&so=1&cg=1&cy=0" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="autoplay; fullscreen" allowfullscreen data-profile="meta-ads"></iframe>
                     </div>
-                    <div class="mt-6 bg-yellow-50 border border-yellow-200 p-4 rounded-lg text-sm text-yellow-800">
-                        <p class="font-bold">¡Importante!</p>
-                        <p>Ve el video completo para liberar tu receta personalizada.</p>
-                    </div>
+                    <a id="cta-button" href="https://pay.hotmart.com/I103092154N?off=8pqi3d4c&checkoutMode=10" class="mt-6 w-full bg-kiwi-green text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-kiwi-dark-green transition-all flex items-center justify-center gap-2 uppercase text-sm" style="display:none;">
+                        ACCEDER A LA RECETA PERSONALIZADA ${icons.arrowRight}
+                    </a>
                     </div>
                 `;
                 break;
@@ -362,6 +361,14 @@
         }
         if (state.step === 14) {
             setupLoadingLogic();
+        }
+        if (state.step === 17) {
+            setTimeout(() => {
+                const ctaButton = document.getElementById('cta-button');
+                if (ctaButton) {
+                    ctaButton.style.display = 'flex';
+                }
+            }, 10000);
         }
     }
 
