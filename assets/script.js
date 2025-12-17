@@ -363,22 +363,19 @@
             setupLoadingLogic();
         }
         if (state.step === 17) {
-            window.addEventListener('message', function handleVideoMessage(event) {
-                try {
-                    const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-                    const currentTime = data.currentTime || data.time || data.playedSeconds || 
-                                        (data.info && data.info.currentTime) || 
-                                        (data.data && data.data.currentTime);
-                    
-                    if (currentTime && currentTime >= 10) {
+            let timerStarted = false;
+            const checkFocus = setInterval(() => {
+                if (document.activeElement && document.activeElement.tagName === 'IFRAME' && !timerStarted) {
+                    timerStarted = true;
+                    clearInterval(checkFocus);
+                    setTimeout(() => {
                         const ctaButton = document.getElementById('cta-button');
                         if (ctaButton) {
                             ctaButton.style.display = 'flex';
                         }
-                        window.removeEventListener('message', handleVideoMessage);
-                    }
-                } catch (e) {}
-            });
+                    }, 10000);
+                }
+            }, 100);
         }
     }
 
