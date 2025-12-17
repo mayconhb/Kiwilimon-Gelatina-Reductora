@@ -384,6 +384,8 @@
         }
         if (state.step === 17) {
             let buttonShown = false;
+            let userStartedPlaying = false;
+            let startTime = 0;
             
             window.addEventListener('message', function handleVturbMessage(event) {
                 if (buttonShown) return;
@@ -391,11 +393,20 @@
                 try {
                     const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
                     
-                    if (data.type === 'videoTimeUpdate' && data.payload) {
+                    if (data.type === 'videoPlay') {
+                        if (!userStartedPlaying) {
+                            userStartedPlaying = true;
+                            startTime = data.payload || 0;
+                            console.log('VTurb: User started playing at', startTime);
+                        }
+                    }
+                    
+                    if (data.type === 'videoTimeUpdate' && data.payload && userStartedPlaying) {
                         const currentTime = data.payload.currentTime || data.payload.time || data.payload;
-                        console.log('VTurb time:', currentTime);
+                        const watchedTime = currentTime - startTime;
+                        console.log('VTurb watched:', watchedTime.toFixed(1), 's');
                         
-                        if (currentTime >= 10) {
+                        if (watchedTime >= 10) {
                             buttonShown = true;
                             const ctaButton = document.getElementById('cta-button');
                             if (ctaButton) {
