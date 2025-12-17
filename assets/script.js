@@ -361,8 +361,10 @@
                     <h3 class="text-lg font-bold text-gray-800 mb-4 uppercase leading-snug">
                         MIRA ESTE VIDEO DONDE LA DRA. PATRICIA FERNANDEZ EXPLICA CÓMO USAR TU RECETA
                     </h3>
-                    <div style="position:relative;width:100%;max-width:400px;aspect-ratio:9/16;margin:0 auto;">
-                        <iframe src="https://vslpro.com.br/play.php?id=20251217213035-208f8d&rv=4f361a6e&vp=0&pbg=%230025db&ptri=%23ffffff&rs=txt&so=1&cg=1&cy=0" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="autoplay; fullscreen" allowfullscreen data-profile="meta-ads"></iframe>
+                    <div id="ifr_69432bd756803cfbd7054996_wrapper" style="margin: 0 auto; width: 100%; max-width: 400px;">
+                        <div style="position: relative; padding: 152.59259259259258% 0 0 0;" id="ifr_69432bd756803cfbd7054996_aspect">
+                            <iframe frameborder="0" allowfullscreen src="about:blank" id="ifr_69432bd756803cfbd7054996" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" referrerpolicy="origin" onload="this.onload=null, this.src='https://scripts.converteai.net/32feb844-35ec-4ff2-a2f5-d9b02098dece/players/69432bd756803cfbd7054996/v4/embed.html'+(location.search||'?')+'&vl='+encodeURIComponent(location.href)"></iframe>
+                        </div>
                     </div>
                     <a id="cta-button" href="https://pay.hotmart.com/I103092154N?off=8pqi3d4c&checkoutMode=10" class="mt-6 w-full bg-kiwi-green text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-kiwi-dark-green transition-all flex items-center justify-center gap-2 uppercase text-sm" style="display:none;">
                         ACCEDER A LA RECETA PERSONALIZADA ${icons.arrowRight}
@@ -381,56 +383,34 @@
             setupLoadingLogic();
         }
         if (state.step === 17) {
-            let accumulatedTime = 0;
-            let isPlaying = false;
-            let lastTimestamp = null;
             let buttonShown = false;
+            let attempts = 0;
             
-            const updateTime = () => {
-                if (buttonShown) return;
-                
-                const now = Date.now();
-                if (isPlaying && lastTimestamp) {
-                    accumulatedTime += (now - lastTimestamp);
+            const startWatchVideoProgress = function() {
+                if (typeof smartplayer === 'undefined' || !(smartplayer.instances && smartplayer.instances.length)) {
+                    if (attempts >= 30) return;
+                    attempts++;
+                    return setTimeout(startWatchVideoProgress, 1000);
                 }
-                lastTimestamp = now;
                 
-                if (accumulatedTime >= 10000 && !buttonShown) {
-                    buttonShown = true;
-                    const ctaButton = document.getElementById('cta-button');
-                    if (ctaButton) {
-                        ctaButton.style.display = 'flex';
+                const player = smartplayer.instances[0];
+                
+                player.on('timeupdate', function() {
+                    if (buttonShown) return;
+                    
+                    const currentTime = player.getCurrentTime();
+                    
+                    if (currentTime >= 10 && !buttonShown) {
+                        buttonShown = true;
+                        const ctaButton = document.getElementById('cta-button');
+                        if (ctaButton) {
+                            ctaButton.style.display = 'flex';
+                        }
                     }
-                }
+                });
             };
             
-            const timeInterval = setInterval(() => {
-                updateTime();
-                if (buttonShown) clearInterval(timeInterval);
-            }, 100);
-            
-            const checkFocus = setInterval(() => {
-                const iframeFocused = document.activeElement && document.activeElement.tagName === 'IFRAME';
-                if (iframeFocused && !isPlaying) {
-                    isPlaying = true;
-                    lastTimestamp = Date.now();
-                }
-                if (buttonShown) clearInterval(checkFocus);
-            }, 100);
-            
-            document.addEventListener('click', function handleClick(e) {
-                if (buttonShown) {
-                    document.removeEventListener('click', handleClick);
-                    return;
-                }
-                const iframe = container.querySelector('iframe');
-                if (iframe && !iframe.contains(e.target) && e.target !== iframe) {
-                    if (isPlaying) {
-                        updateTime();
-                        isPlaying = false;
-                    }
-                }
-            });
+            startWatchVideoProgress();
         }
     }
 
