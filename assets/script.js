@@ -384,7 +384,9 @@
         }
         if (state.step === 17) {
             let buttonShown = false;
-            let startTime = null;
+            let accumulatedWatchTime = 0;
+            let lastUpdateTime = null;
+            let isPlaying = false;
             
             window.addEventListener('message', function handleVturbMessage(event) {
                 if (buttonShown) return;
@@ -392,24 +394,49 @@
                 try {
                     const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
                     
+                    // Detectar eventos de play/pause da VTurb
+                    if (data.type === 'play' || data.type === 'playing' || data.event === 'play' || data.event === 'playing') {
+                        isPlaying = true;
+                        lastUpdateTime = Date.now();
+                        console.log('VTurb: Video started playing');
+                    }
+                    
+                    if (data.type === 'pause' || data.event === 'pause') {
+                        isPlaying = false;
+                        lastUpdateTime = null;
+                        console.log('VTurb: Video paused. Total watched:', accumulatedWatchTime.toFixed(1), 's');
+                    }
+                    
+                    // Evento de timeupdate - acumular tempo apenas se o vídeo está tocando
                     if (data.type === 'videoTimeUpdate' && data.payload) {
-                        const currentTime = typeof data.payload === 'number' ? data.payload : 
-                                           (data.payload.currentTime || data.payload.time || 0);
+                        const now = Date.now();
                         
-                        if (startTime === null) {
-                            startTime = currentTime;
-                            console.log('VTurb: Start time set to', startTime);
+                        // Se não sabemos se está tocando, assumir que está (para retrocompatibilidade)
+                        if (lastUpdateTime === null) {
+                            isPlaying = true;
+                            lastUpdateTime = now;
+                            console.log('VTurb: First timeupdate, assuming video is playing');
                         }
                         
-                        const watchedTime = currentTime - startTime;
-                        console.log('VTurb watched:', watchedTime.toFixed(1), 's');
+                        // Acumular tempo apenas se o vídeo está tocando
+                        if (isPlaying && lastUpdateTime !== null) {
+                            const elapsed = (now - lastUpdateTime) / 1000;
+                            // Limitar a incrementos razoáveis (máximo 1 segundo por update)
+                            if (elapsed > 0 && elapsed < 2) {
+                                accumulatedWatchTime += elapsed;
+                            }
+                            lastUpdateTime = now;
+                        }
                         
-                        if (watchedTime >= 10) {
+                        console.log('VTurb watched:', accumulatedWatchTime.toFixed(1), 's');
+                        
+                        if (accumulatedWatchTime >= 10) {
                             buttonShown = true;
                             const ctaButton = document.getElementById('cta-button');
                             if (ctaButton) {
                                 ctaButton.style.display = 'flex';
                             }
+                            console.log('VTurb: Button shown after 10 seconds of watch time');
                             window.removeEventListener('message', handleVturbMessage);
                         }
                     }
