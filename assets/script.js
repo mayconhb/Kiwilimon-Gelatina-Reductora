@@ -70,6 +70,24 @@
         }
     };
 
+    window.goToVideoPage = function() {
+        state.step = 17;
+        state.isQuizActive = true;
+        if(dom.staticTop) dom.staticTop.style.display = 'none';
+        if(dom.staticIngredients) dom.staticIngredients.style.display = 'none';
+        if(dom.quizContainer) {
+            dom.quizContainer.classList.remove('hidden');
+            dom.quizContainer.style.display = 'block';
+        }
+        if(dom.progressContainer) {
+            dom.progressContainer.classList.remove('hidden');
+            dom.progressContainer.style.display = 'flex';
+        }
+        updateProgress();
+        renderStep();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     window.toggleBenefit = function(btn, option) {
         if (state.selectedBenefits.includes(option)) {
             state.selectedBenefits = state.selectedBenefits.filter(b => b !== option);
