@@ -1,0 +1,66 @@
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+::-webkit-scrollbar-thumb {
+    background: #ccc; 
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #aaa; 
+}
+
+/* Range Input Base Styles */
+input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+    cursor: pointer;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+/* Webkit (Chrome, Safari, Edge) Thumb */
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    background: #85c440;
+    margin-top: -12px; /* Center thumb: (32px / 2) - (8px / 2) * -1 = -12px */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 4px solid white;
+}
+
+/* Webkit Track */
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: transparent; /* Handled by inline linear-gradient in JS */
+    border-radius: 999px;
+}
+
+/* Firefox Thumb */
+input[type=range]::-moz-range-thumb {
+    height: 32px;
+    width: 32px;
+    border: 4px solid white;
+    border-radius: 50%;
+    background: #85c440;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Firefox Track */
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: transparent;
+    border-radius: 999px;
+}
