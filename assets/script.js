@@ -430,7 +430,7 @@
                         
                         console.log('VTurb watched:', accumulatedWatchTime.toFixed(1), 's');
                         
-                        if (accumulatedWatchTime >= 10) {
+                        if (accumulatedWatchTime >= 535) {
                             buttonShown = true;
                             const ctaButton = document.getElementById('cta-button');
                             if (ctaButton) {
