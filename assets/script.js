@@ -363,19 +363,56 @@
             setupLoadingLogic();
         }
         if (state.step === 17) {
-            let timerStarted = false;
-            const checkFocus = setInterval(() => {
-                if (document.activeElement && document.activeElement.tagName === 'IFRAME' && !timerStarted) {
-                    timerStarted = true;
-                    clearInterval(checkFocus);
-                    setTimeout(() => {
-                        const ctaButton = document.getElementById('cta-button');
-                        if (ctaButton) {
-                            ctaButton.style.display = 'flex';
-                        }
-                    }, 10000);
+            let accumulatedTime = 0;
+            let isPlaying = false;
+            let lastTimestamp = null;
+            let buttonShown = false;
+            
+            const updateTime = () => {
+                if (buttonShown) return;
+                
+                const now = Date.now();
+                if (isPlaying && lastTimestamp) {
+                    accumulatedTime += (now - lastTimestamp);
                 }
+                lastTimestamp = now;
+                
+                if (accumulatedTime >= 10000 && !buttonShown) {
+                    buttonShown = true;
+                    const ctaButton = document.getElementById('cta-button');
+                    if (ctaButton) {
+                        ctaButton.style.display = 'flex';
+                    }
+                }
+            };
+            
+            const timeInterval = setInterval(() => {
+                updateTime();
+                if (buttonShown) clearInterval(timeInterval);
             }, 100);
+            
+            const checkFocus = setInterval(() => {
+                const iframeFocused = document.activeElement && document.activeElement.tagName === 'IFRAME';
+                if (iframeFocused && !isPlaying) {
+                    isPlaying = true;
+                    lastTimestamp = Date.now();
+                }
+                if (buttonShown) clearInterval(checkFocus);
+            }, 100);
+            
+            document.addEventListener('click', function handleClick(e) {
+                if (buttonShown) {
+                    document.removeEventListener('click', handleClick);
+                    return;
+                }
+                const iframe = container.querySelector('iframe');
+                if (iframe && !iframe.contains(e.target) && e.target !== iframe) {
+                    if (isPlaying) {
+                        updateTime();
+                        isPlaying = false;
+                    }
+                }
+            });
         }
     }
 
