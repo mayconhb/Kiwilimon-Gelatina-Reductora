@@ -194,11 +194,8 @@
                         <h3 class="text-xl font-bold text-gray-800 mb-4 text-center uppercase">
                             ¿CÓMO FUNCIONA LA RECETA DE LA GELATINA REDUCTORA?
                         </h3>
-                        <div class="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-6 border-2 border-dashed border-gray-300">
-                            <div class="text-center text-gray-400 p-4">
-                                ${icons.camera}
-                                <span class="font-bold text-sm">Espacio para Imagen del Ciclo</span>
-                            </div>
+                        <div class="w-full mb-6">
+                            <img src="assets/media/protocolo-gelatina.png" alt="Cómo funciona la Gelatina Reductora" class="w-full rounded-lg">
                         </div>
                         <p class="text-gray-700 text-sm text-center mb-4 leading-relaxed">
                             Los componentes de la Receta Personalizada de la Gelatina Reductora siguen actuando mientras duermes, <span class="font-bold">activando tus células quemadoras de grasa</span> y acelerando la producción natural de GLP-1.
