@@ -104,9 +104,12 @@
         .justify-center{justify-content:center}
         .justify-between{justify-content:space-between}
         .flex-1{flex:1 1 0%!important}
-        #main-header .flex.items-center.px-4{justify-content:space-between!important}
-        #main-header > div > div:first-child{flex:1 1 0%!important}
-        #main-header .bg-white{height:48px!important;width:44px!important}
+        #main-header .flex.items-center.px-4{display:flex!important;width:100%!important;justify-content:space-between!important;align-items:center!important}
+        #main-header > div > div:first-child{display:flex!important;align-items:center!important;gap:1rem!important;min-width:0!important}
+        #main-header > div > div:last-child{display:flex!important;align-items:center!important;gap:0.5rem!important;margin-left:auto!important}
+        #main-header button{display:flex!important;align-items:center!important;justify-content:center!important}
+        .w-11{width:2.75rem!important}
+        .h-12{height:3rem!important}
         .space-y-2>*+*{margin-top:.5rem}
         .space-y-3>*+*{margin-top:.75rem}
         .space-y-4>*+*{margin-top:1rem}
