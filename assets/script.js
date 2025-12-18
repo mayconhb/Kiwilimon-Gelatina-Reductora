@@ -301,7 +301,11 @@
             case 16:
                 content = `
                     <div class="py-2">
-                    <h3 class="text-xl font-bold text-gray-800 mb-8 text-center leading-tight">¿Estás lista para transformar tu cuerpo y tu salud?</h3>
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 text-center leading-tight">¿Estás lista para transformar tu cuerpo y tu salud?</h3>
+                    
+                    <div class="w-full mb-6">
+                        <img src="assets/media/resultado-nereide.webp" alt="Transformación - Antes y Después" class="w-full rounded-lg">
+                    </div>
                     
                     <div class="flex items-center justify-center gap-1 mb-8">
                         <div class="bg-red-50 border border-red-200 p-3 rounded-xl text-center flex-1 min-w-0 shadow-sm h-full flex flex-col justify-between">
