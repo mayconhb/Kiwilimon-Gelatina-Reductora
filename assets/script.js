@@ -320,6 +320,12 @@
                             <div class="flex justify-between items-center border-b border-red-100 pb-1">
                                 <span>Energía:</span> <span class="font-bold text-red-600">Bajo</span>
                             </div>
+                            <div class="flex justify-between items-center border-b border-red-100 pb-1">
+                                <span>Peso:</span> <span class="font-bold text-red-600">Alto</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-red-100 pb-1">
+                                <span>Barriga:</span> <span class="font-bold text-red-600">Grande</span>
+                            </div>
                             <div class="flex justify-between items-center pt-0.5">
                                 <span>Riesgo:</span> <span class="font-bold text-red-600">Altísimos</span>
                             </div>
@@ -341,6 +347,12 @@
                             </div>
                             <div class="flex justify-between items-center border-b border-gray-100 pb-1">
                                 <span>Energía:</span> <span class="font-bold text-[#8CC63F]">Fuerte</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-1">
+                                <span>Peso:</span> <span class="font-bold text-[#8CC63F]">Bajo</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-1">
+                                <span>Barriga:</span> <span class="font-bold text-[#8CC63F]">Pequeña</span>
                             </div>
                             <div class="flex justify-between items-center pt-0.5">
                                 <span>Riesgo:</span> <span class="font-bold text-[#8CC63F]">Muy bajo</span>
