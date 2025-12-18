@@ -504,8 +504,8 @@
                 <!-- Testimonials HTML omitted for brevity but logic is same as before -->
                  <!-- Gomita -->
                 <div class="mb-6">
-                    <div class="w-full aspect-[4/3] bg-gray-200 rounded-lg flex items-center justify-center mb-4 text-gray-400 border-2 border-dashed border-gray-300">
-                    <span class="font-bold text-sm">Foto Antes / Después (Gomita)</span>
+                    <div class="w-full mb-4">
+                        <img src="assets/media/resultado-gomita.webp" alt="Resultado Gomita - Antes y Después" class="w-full rounded-lg">
                     </div>
                     <p class="text-gray-700 italic mb-3 text-sm leading-relaxed">
                     "Ya había intentado de todo para adelgazar, pero nada funcionaba realmente. Después de empezar a usar la receta de la Gelatina Reductora en mi día a día, perdí 8 kilos en solo 17 días — sin cambiar nada en mi alimentación. Ahora me siento más ligera, más bonita y con una confianza que no sentía desde hacía años."
@@ -517,8 +517,8 @@
                 <div class="my-8 border-t border-gray-200"></div>
                  <!-- Fernanda -->
                 <div class="mb-8">
-                    <div class="w-full aspect-[4/3] bg-gray-200 rounded-lg flex items-center justify-center mb-4 text-gray-400 border-2 border-dashed border-gray-300">
-                    <span class="font-bold text-sm">Foto Antes / Después (Fernanda)</span>
+                    <div class="w-full mb-4">
+                        <img src="assets/media/resultado-fernanda.webp" alt="Resultado Fernanda - Antes y Después" class="w-full rounded-lg">
                     </div>
                     <p class="text-gray-700 italic mb-3 text-sm leading-relaxed">
                     "Después de mi embarazo, mi abdomen no volvía a la normalidad y me sentía muy frustrada. Probé esta receta sin mucha fe, pero los resultados fueron increíbles. En 3 semanas mi vientre está plano y he bajado 9 kilos. ¡Por fin volví a usar mi ropa de antes!"
