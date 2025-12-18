@@ -40,6 +40,31 @@
     };
 
     let dom = {};
+    let imageObserver = null;
+
+    // --- Lazy Loading com Intersection Observer (pré-carregamento inteligente) ---
+    function setupLazyLoadingObserver() {
+        // Pré-carregar imagens quando estiverem ~800px antes de ficar visível
+        const observerOptions = {
+            root: null,
+            rootMargin: '800px 0px', // Carregar 800px antes da imagem entrar na viewport
+            threshold: 0
+        };
+
+        imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting || entry.intersectionRatio > 0) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        imageObserver.unobserve(img);
+                        console.log('Image preloaded:', img.alt);
+                    }
+                }
+            });
+        }, observerOptions);
+    }
 
     // --- Core Functions (Hoisted) ---
 
@@ -195,7 +220,7 @@
                             ¿CÓMO FUNCIONA LA RECETA DE LA GELATINA REDUCTORA?
                         </h3>
                         <div class="w-full mb-6">
-                            <img src="assets/media/protocolo-gelatina.webp" alt="Cómo funciona la Gelatina Reductora" class="w-full rounded-lg" loading="lazy" decoding="async">
+                            <img data-src="assets/media/protocolo-gelatina.webp" alt="Cómo funciona la Gelatina Reductora" class="w-full rounded-lg" decoding="async">
                         </div>
                         <p class="text-gray-700 text-sm text-center mb-4 leading-relaxed">
                             Los componentes de la Receta Personalizada de la Gelatina Reductora siguen actuando mientras duermes, <span class="font-bold">activando tus células quemadoras de grasa</span> y acelerando la producción natural de GLP-1.
@@ -292,7 +317,7 @@
 
                         <h3 class="text-xl font-bold text-gray-800 mb-4 text-center uppercase">Mira la transformación de Rosana</h3>
                         <div class="w-full mb-6">
-                            <img src="assets/media/resultado-rosana.webp" alt="Transformación de Rosana - Antes y Después" class="w-full rounded-lg" loading="lazy" decoding="async">
+                            <img data-src="assets/media/resultado-rosana.webp" alt="Transformación de Rosana - Antes y Después" class="w-full rounded-lg" decoding="async">
                         </div>
                         ${renderContinueButton()}
                     </div>
@@ -304,7 +329,7 @@
                     <h3 class="text-xl font-bold text-gray-800 mb-6 text-center leading-tight">¿Estás lista para transformar tu cuerpo y tu salud?</h3>
                     
                     <div class="w-full mb-6">
-                        <img src="assets/media/resultado-nereide.webp" alt="Transformación - Antes y Después" class="w-full rounded-lg" loading="lazy" decoding="async">
+                        <img data-src="assets/media/resultado-nereide.webp" alt="Transformación - Antes y Después" class="w-full rounded-lg" decoding="async">
                     </div>
                     
                     <div class="flex items-center justify-center gap-1 mb-8">
@@ -391,6 +416,14 @@
         }
 
         container.innerHTML = content;
+
+        // Observar imagens com data-src após renderizar
+        if (imageObserver) {
+            const lazyImages = container.querySelectorAll('img[data-src]');
+            lazyImages.forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
 
         if (state.step >= 10 && state.step <= 12) {
             setupRangeSlider();
@@ -524,7 +557,7 @@
                  <!-- Gomita -->
                 <div class="mb-6">
                     <div class="w-full mb-4">
-                        <img src="assets/media/resultado-gomita.webp" alt="Resultado Gomita - Antes y Después" class="w-full rounded-lg" loading="lazy" decoding="async">
+                        <img data-src="assets/media/resultado-gomita.webp" alt="Resultado Gomita - Antes y Después" class="w-full rounded-lg" decoding="async">
                     </div>
                     <p class="text-gray-700 italic mb-3 text-sm leading-relaxed">
                     "Ya había intentado de todo para adelgazar, pero nada funcionaba realmente. Después de empezar a usar la receta de la Gelatina Reductora en mi día a día, perdí 8 kilos en solo 17 días — sin cambiar nada en mi alimentación. Ahora me siento más ligera, más bonita y con una confianza que no sentía desde hacía años."
@@ -537,7 +570,7 @@
                  <!-- Fernanda -->
                 <div class="mb-8">
                     <div class="w-full mb-4">
-                        <img src="assets/media/resultado-fernanda.webp" alt="Resultado Fernanda - Antes y Después" class="w-full rounded-lg" loading="lazy" decoding="async">
+                        <img data-src="assets/media/resultado-fernanda.webp" alt="Resultado Fernanda - Antes y Después" class="w-full rounded-lg" decoding="async">
                     </div>
                     <p class="text-gray-700 italic mb-3 text-sm leading-relaxed">
                     "Después de mi embarazo, mi abdomen no volvía a la normalidad y me sentía muy frustrada. Probé esta receta sin mucha fe, pero los resultados fueron increíbles. En 3 semanas mi vientre está plano y he bajado 9 kilos. ¡Por fin volví a usar mi ropa de antes!"
@@ -718,6 +751,9 @@
 
     function init() {
         try {
+            // Inicializar lazy loading observer
+            setupLazyLoadingObserver();
+            
             dom = {
                 staticTop: document.getElementById('static-top-content'),
                 staticIngredients: document.getElementById('static-ingredients-view'),
