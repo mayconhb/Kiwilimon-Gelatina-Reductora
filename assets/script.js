@@ -375,7 +375,7 @@
                 content = `
                     <div class="py-4 text-center">
                     <h3 class="text-lg font-bold text-gray-800 mb-4 uppercase leading-snug">
-                        MIRA ESTE VIDEO DONDE LA DRA. PATRICIA FERNANDEZ EXPLICA CÓMO USAR TU RECETA
+                        MIRA ESTE VIDEO DONDE LA DRA. PATRICIA FERNANDEZ EXPLICA CÓMO USAR TU RECETA Y CÓMO ACCESARLA
                     </h3>
                     <div id="ifr_69432bd756803cfbd7054996_wrapper" style="margin: 0 auto; width: 100%; max-width: 400px;">
                         <div style="position: relative; padding: 152.59259259259258% 0 0 0;" id="ifr_69432bd756803cfbd7054996_aspect">
