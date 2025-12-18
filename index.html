@@ -28,48 +28,43 @@
     <link rel="dns-prefetch" href="https://cdn-files-a.convertingpro.com">
     <link rel="preconnect" href="https://cdn-files-a.convertingpro.com" crossorigin>
     
+    <!-- Fontes com display=swap para evitar FOIT -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <!-- Critical CSS inline para renderização imediata -->
     <style>
-        *{box-sizing:border-box}body{margin:0;font-family:'Open Sans',system-ui,-apple-system,sans-serif;background:#f4f4f4;color:#333}#app{min-height:100vh;background:#f4f4f4;max-width:28rem;margin:0 auto;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden;padding-bottom:5rem}#main-header{background:#85c440;color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 4px 6px -1px rgba(0,0,0,.1);height:3.5rem;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}h1,h2,h3{margin:0}img{max-width:100%;height:auto;display:block}
+        *{box-sizing:border-box}
+        body{margin:0;font-family:'Open Sans',system-ui,-apple-system,sans-serif;background:#f4f4f4;color:#333;line-height:1.5}
+        #app{min-height:100vh;background:#f4f4f4;max-width:28rem;margin:0 auto;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden;padding-bottom:5rem}
+        #main-header{background:#85c440;color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 4px 6px -1px rgba(0,0,0,.1);height:3.5rem;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}
+        h1,h2,h3{margin:0;font-weight:700}
+        img{max-width:100%;height:auto;display:block}
+        .w-full{width:100%}
+        .bg-white{background:#fff}
+        .px-4{padding-left:1rem;padding-right:1rem}
+        .py-3{padding-top:.75rem;padding-bottom:.75rem}
+        .py-6{padding-top:1.5rem;padding-bottom:1.5rem}
+        .mt-4{margin-top:1rem}
+        .mb-6{margin-bottom:1.5rem}
+        .text-center{text-align:center}
+        .text-sm{font-size:.875rem}
+        .text-lg{font-size:1.125rem}
+        .text-2xl{font-size:1.5rem}
+        .font-bold{font-weight:700}
+        .gap-2{gap:.5rem}
+        .flex{display:flex}
+        .items-center{align-items:center}
+        .justify-center{justify-content:center}
+        .space-y-6>*+*{margin-top:1.5rem}
+        .rounded-lg{border-radius:.5rem}
+        .shadow-md{box-shadow:0 4px 6px -1px rgba(0,0,0,.1)}
+        .border{border:1px solid #e5e7eb}
     </style>
-    
-    <!-- Tailwind (defer + async para baixa prioridade) -->
-    <!-- Fontes com display=swap para evitar FOIT -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS não-crítico com defer -->
     <link rel="stylesheet" href="assets/style.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="assets/style.css"></noscript>
-    
-    <!-- Tailwind (defer para prioridade baixa) -->
-    <script defer src="https://cdn.tailwindcss.com"></script>
-    <script>
-      // Aguardar Tailwind estar disponível antes de configurar
-      function setupTailwindConfig() {
-        if (typeof tailwind !== 'undefined') {
-          tailwind.config = {
-            theme: {
-              extend: {
-                colors: {
-                  'kiwi-green': '#85c440',
-                  'kiwi-dark-green': '#6da530',
-                  'kiwi-text': '#333333',
-                  'kiwi-gray': '#666666',
-                  'kiwi-light-gray': '#f2f2f2',
-                },
-                fontFamily: {
-                  serif: ['Merriweather', 'serif'],
-                  sans: ['Open Sans', 'sans-serif'],
-                }
-              }
-            }
-          };
-        } else {
-          setTimeout(setupTailwindConfig, 100);
-        }
-      }
-      setupTailwindConfig();
-    </script>
     <script>
       if(window.requestIdleCallback){requestIdleCallback(function(){var gtmLoaded=false;function loadGTM(){if(gtmLoaded)return;gtmLoaded=true;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://escala.purelifenews.com/cechksinwxgg.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','6sinyrou=DgNFMDokXj8hKTpDLVAnTRFaSllfTxcFWhcNBQsFGg0CCR0AHUcQBAo%3D');}setTimeout(loadGTM,3000);['scroll','click','touchstart'].forEach(function(e){document.addEventListener(e,loadGTM,{once:true,passive:true});})})}else{setTimeout(function(){var gtmLoaded=false;function loadGTM(){if(gtmLoaded)return;gtmLoaded=true;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://escala.purelifenews.com/cechksinwxgg.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','6sinyrou=DgNFMDokXj8hKTpDLVAnTRFaSllfTxcFWhcNBQsFGg0CCR0AHUcQBAo%3D');}setTimeout(loadGTM,3000);['scroll','click','touchstart'].forEach(function(e){document.addEventListener(e,loadGTM,{once:true,passive:true});})},2000)}
       document.addEventListener('mousedown',function(e){var target=e.target.closest('a');if(target&&target.href){var isCheckout=['pay.hotmart','kiwify','checkout','payment','pay'].some(function(term){return target.href.includes(term)});if(isCheckout){if(window.QuizAnalytics){window.QuizAnalytics.trackCheckout(target.href,window.step||18)}var currentParams=window.location.search;if(currentParams&&!target.href.includes('xcod')){var separator=target.href.includes('?')? '&':'?';target.href=target.href+separator+currentParams.replace(/^\?/,'')}}}});
@@ -134,9 +129,9 @@
                 </div>
             </div>
 
-            <!-- Media Section - Tamanho fixo para evitar CLS -->
-            <div class="w-full" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="assets/media/gelatina-gomita.webp" alt="Gelatina Reductora" class="w-full h-full object-cover" fetchpriority="high" decoding="async" loading="eager">
+            <!-- Media Section -->
+            <div class="w-full">
+                <img src="assets/media/gelatina-gomita.webp" alt="Gelatina Reductora" width="336" height="224" class="w-full" fetchpriority="high" decoding="async" style="display:block;background:#f0f0f0;">
             </div>
         </div>
 
