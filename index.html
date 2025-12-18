@@ -3,10 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receta de Gelatina Reductora - Kiwilimón Clone</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/style.css">
+    <title>Receta de Gelatina Reductora - Kiwilimón</title>
+    
+    <!-- Preconnect para recursos externos - acelera conexões -->
+    <link rel="preconnect" href="https://pay.hotmart.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://scripts.converteai.net">
+    <link rel="preconnect" href="https://escala.purelifenews.com">
+    
+    <!-- DNS Prefetch para domínios secundários -->
+    <link rel="dns-prefetch" href="https://pay.hotmart.com">
+    <link rel="dns-prefetch" href="https://hotmart.com">
+    
+    <!-- Preload imagem principal (above the fold) -->
+    <link rel="preload" href="assets/media/gelatina-gomita.webp" as="image" type="image/webp" fetchpriority="high">
+    
+    <!-- Preload fonte crítica -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" as="style">
+    
+    <!-- Critical CSS inline para renderização imediata -->
+    <style>
+        body{margin:0;font-family:'Open Sans',system-ui,-apple-system,sans-serif;background:#f4f4f4}
+        .bg-kiwi-green{background:#85c440}
+        .text-white{color:#fff}
+        .font-bold{font-weight:700}
+        .text-2xl{font-size:1.5rem}
+        .flex{display:flex}
+        .items-center{align-items:center}
+        .justify-between{justify-content:space-between}
+        .px-4{padding-left:1rem;padding-right:1rem}
+        .h-14{height:3.5rem}
+        .shadow-md{box-shadow:0 4px 6px -1px rgba(0,0,0,.1)}
+        .sticky{position:sticky}
+        .top-0{top:0}
+        .z-50{z-index:50}
+        .max-w-md{max-width:28rem}
+        .mx-auto{margin-left:auto;margin-right:auto}
+        .min-h-screen{min-height:100vh}
+        .shadow-2xl{box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}
+        .overflow-hidden{overflow:hidden}
+        .pb-20{padding-bottom:5rem}
+        .w-full{width:100%}
+        .rounded-lg{border-radius:.5rem}
+        .mb-6{margin-bottom:1.5rem}
+        .text-center{text-align:center}
+        .p-4{padding:1rem}
+        .bg-white{background:#fff}
+        .gap-4{gap:1rem}
+        .p-1{padding:.25rem}
+        .p-2{padding:.5rem}
+        .p-3{padding:.75rem}
+        .relative{position:relative}
+        .absolute{position:absolute}
+    </style>
+    
+    <!-- Tailwind com defer -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    
+    <!-- Fontes com display=swap para evitar FOIT -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+    
+    <!-- CSS não-crítico com defer -->
+    <link rel="stylesheet" href="assets/style.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/style.css"></noscript>
     <script>
       tailwind.config = {
         theme: {
@@ -26,21 +88,17 @@
         }
       }
     </script>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
-    "react/": "https://esm.sh/react@^19.2.3/"
-  }
-}
-</script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        // GTM - carrega após página visível
-        setTimeout(function() {
+        // GTM - carrega após interação ou 3 segundos (não bloqueia render)
+        var gtmLoaded = false;
+        function loadGTM() {
+          if (gtmLoaded) return;
+          gtmLoaded = true;
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://escala.purelifenews.com/cechksinwxgg.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','6sinyrou=DgNFMDokXj8hKTpDLVAnTRFaSllfTxcFWhcNBQsFGg0CCR0AHUcQBAo%3D');
-        }, 100);
+        }
+        setTimeout(loadGTM, 3000);
+        ['scroll','click','touchstart'].forEach(function(e){document.addEventListener(e,loadGTM,{once:true,passive:true});});
         
         // Checkout params and tracking
         var checkoutTerms = ['pay.hotmart', 'kiwify', 'checkout', 'payment', 'pay'];
@@ -127,7 +185,7 @@
 
             <!-- Media Section -->
             <div class="w-full">
-                <img src="assets/media/gelatina-gomita.webp" alt="Gelatina Reductora" class="w-full">
+                <img src="assets/media/gelatina-gomita.webp" alt="Gelatina Reductora" class="w-full" fetchpriority="high" decoding="async">
             </div>
         </div>
 
@@ -256,6 +314,6 @@
 
     </div>
     
-    <script src="assets/script.js"></script>
+    <script src="assets/script.js" defer></script>
 </body>
 </html>
