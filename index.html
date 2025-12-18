@@ -103,7 +103,8 @@
         .justify-start{justify-content:flex-start}
         .justify-center{justify-content:center}
         .justify-between{justify-content:space-between}
-        #main-header .flex.items-center.justify-between > div:last-child{margin-left:auto}
+        .flex-1{flex:1 1 0%!important}
+        #main-header > div > div:first-child{flex:1 1 0%!important}
         .space-y-2>*+*{margin-top:.5rem}
         .space-y-3>*+*{margin-top:.75rem}
         .space-y-4>*+*{margin-top:1rem}
@@ -304,7 +305,7 @@
         
         <!-- Header -->
         <header id="main-header" class="bg-kiwi-green text-white sticky top-0 z-50 shadow-md">
-            <div class="flex items-center justify-between px-4 h-14">
+            <div class="flex items-center px-4 h-14" style="justify-content: space-between;">
                 <div class="flex items-center gap-4">
                     <button class="p-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
