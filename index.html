@@ -30,50 +30,19 @@
     
     <!-- Critical CSS inline para renderização imediata -->
     <style>
-        body{margin:0;font-family:'Open Sans',system-ui,-apple-system,sans-serif;background:#f4f4f4}
-        .bg-kiwi-green{background:#85c440}
-        .text-white{color:#fff}
-        .font-bold{font-weight:700}
-        .text-2xl{font-size:1.5rem}
-        .flex{display:flex}
-        .items-center{align-items:center}
-        .justify-between{justify-content:space-between}
-        .px-4{padding-left:1rem;padding-right:1rem}
-        .h-14{height:3.5rem}
-        .shadow-md{box-shadow:0 4px 6px -1px rgba(0,0,0,.1)}
-        .sticky{position:sticky}
-        .top-0{top:0}
-        .z-50{z-index:50}
-        .max-w-md{max-width:28rem}
-        .mx-auto{margin-left:auto;margin-right:auto}
-        .min-h-screen{min-height:100vh}
-        .shadow-2xl{box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}
-        .overflow-hidden{overflow:hidden}
-        .pb-20{padding-bottom:5rem}
-        .w-full{width:100%}
-        .rounded-lg{border-radius:.5rem}
-        .mb-6{margin-bottom:1.5rem}
-        .text-center{text-align:center}
-        .p-4{padding:1rem}
-        .bg-white{background:#fff}
-        .gap-4{gap:1rem}
-        .p-1{padding:.25rem}
-        .p-2{padding:.5rem}
-        .p-3{padding:.75rem}
-        .relative{position:relative}
-        .absolute{position:absolute}
+        *{box-sizing:border-box}body{margin:0;font-family:'Open Sans',system-ui,-apple-system,sans-serif;background:#f4f4f4;color:#333}#app{min-height:100vh;background:#f4f4f4;max-width:28rem;margin:0 auto;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden;padding-bottom:5rem}#main-header{background:#85c440;color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 4px 6px -1px rgba(0,0,0,.1);height:3.5rem;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}h1,h2,h3{margin:0}img{max-width:100%;height:auto;display:block}
     </style>
     
-    <!-- Tailwind (async para não bloquear render) -->
-    <script async src="https://cdn.tailwindcss.com"></script>
-    
+    <!-- Tailwind (defer + async para baixa prioridade) -->
     <!-- Fontes com display=swap para evitar FOIT -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS não-crítico com defer -->
     <link rel="stylesheet" href="assets/style.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="assets/style.css"></noscript>
+    
+    <!-- Tailwind (defer para prioridade baixa) -->
+    <script defer src="https://cdn.tailwindcss.com"></script>
     <script>
       // Aguardar Tailwind estar disponível antes de configurar
       function setupTailwindConfig() {
@@ -102,38 +71,8 @@
       setupTailwindConfig();
     </script>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // GTM - carrega após interação ou 3 segundos (não bloqueia render)
-        var gtmLoaded = false;
-        function loadGTM() {
-          if (gtmLoaded) return;
-          gtmLoaded = true;
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://escala.purelifenews.com/cechksinwxgg.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','6sinyrou=DgNFMDokXj8hKTpDLVAnTRFaSllfTxcFWhcNBQsFGg0CCR0AHUcQBAo%3D');
-        }
-        setTimeout(loadGTM, 3000);
-        ['scroll','click','touchstart'].forEach(function(e){document.addEventListener(e,loadGTM,{once:true,passive:true});});
-        
-        // Checkout params and tracking
-        var checkoutTerms = ['pay.hotmart', 'kiwify', 'checkout', 'payment', 'pay'];
-        document.addEventListener('mousedown', function(e) {
-          var target = e.target.closest('a');
-          if (target && target.href) {
-            var isCheckout = checkoutTerms.some(function(term) { return target.href.includes(term); });
-            if (isCheckout) {
-              // Track checkout click
-              if (window.QuizAnalytics) {
-                window.QuizAnalytics.trackCheckout(target.href, window.step || 18);
-              }
-              // Inject UTM params
-              var currentParams = window.location.search;
-              if (currentParams && !target.href.includes('xcod')) {
-                var separator = target.href.includes('?') ? '&' : '?';
-                target.href = target.href + separator + currentParams.replace(/^\?/, '');
-              }
-            }
-          }
-        });
-      });
+      if(window.requestIdleCallback){requestIdleCallback(function(){var gtmLoaded=false;function loadGTM(){if(gtmLoaded)return;gtmLoaded=true;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://escala.purelifenews.com/cechksinwxgg.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','6sinyrou=DgNFMDokXj8hKTpDLVAnTRFaSllfTxcFWhcNBQsFGg0CCR0AHUcQBAo%3D');}setTimeout(loadGTM,3000);['scroll','click','touchstart'].forEach(function(e){document.addEventListener(e,loadGTM,{once:true,passive:true});})})}else{setTimeout(function(){var gtmLoaded=false;function loadGTM(){if(gtmLoaded)return;gtmLoaded=true;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://escala.purelifenews.com/cechksinwxgg.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','6sinyrou=DgNFMDokXj8hKTpDLVAnTRFaSllfTxcFWhcNBQsFGg0CCR0AHUcQBAo%3D');}setTimeout(loadGTM,3000);['scroll','click','touchstart'].forEach(function(e){document.addEventListener(e,loadGTM,{once:true,passive:true});})},2000)}
+      document.addEventListener('mousedown',function(e){var target=e.target.closest('a');if(target&&target.href){var isCheckout=['pay.hotmart','kiwify','checkout','payment','pay'].some(function(term){return target.href.includes(term)});if(isCheckout){if(window.QuizAnalytics){window.QuizAnalytics.trackCheckout(target.href,window.step||18)}var currentParams=window.location.search;if(currentParams&&!target.href.includes('xcod')){var separator=target.href.includes('?')? '&':'?';target.href=target.href+separator+currentParams.replace(/^\?/,'')}}}});
     </script>
 </head>
 <body class="bg-[#f4f4f4] font-sans">
@@ -195,9 +134,9 @@
                 </div>
             </div>
 
-            <!-- Media Section -->
-            <div class="w-full" style="background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%); min-height: 300px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">
-                <img src="assets/media/gelatina-gomita.webp" alt="Gelatina Reductora" class="w-full" fetchpriority="high" decoding="async" onload="this.parentElement.style.background='none'">
+            <!-- Media Section - Tamanho fixo para evitar CLS -->
+            <div class="w-full" style="aspect-ratio: 16/9; overflow: hidden;">
+                <img src="assets/media/gelatina-gomita.webp" alt="Gelatina Reductora" class="w-full h-full object-cover" fetchpriority="high" decoding="async" loading="eager">
             </div>
         </div>
 
@@ -328,14 +267,9 @@
     
     <script src="assets/script.js" defer></script>
     
-    <!-- Carregar SDK da VTurb após tudo pronto -->
+    <!-- Carregar SDK da VTurb após tudo pronto (idle time) -->
     <script>
-        window.addEventListener('load', function() {
-            var s = document.createElement('script');
-            s.src = 'https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js';
-            s.async = true;
-            document.head.appendChild(s);
-        });
+        if(window.requestIdleCallback){requestIdleCallback(function(){var s=document.createElement('script');s.src='https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js';s.async=true;document.head.appendChild(s)})}else{window.addEventListener('load',function(){var s=document.createElement('script');s.src='https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js';s.async=true;document.head.appendChild(s)})}
     </script>
 </body>
 </html>
