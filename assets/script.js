@@ -44,10 +44,10 @@
 
     // --- Lazy Loading com Intersection Observer (pré-carregamento inteligente) ---
     function setupLazyLoadingObserver() {
-        // Pré-carregar imagens quando estiverem ~800px antes de ficar visível
+        // Pré-carregar imagens quando estiverem ~2000px antes de ficar visível
         const observerOptions = {
             root: null,
-            rootMargin: '800px 0px', // Carregar 800px antes da imagem entrar na viewport
+            rootMargin: '2000px 0px', // Carregar 2000px antes da imagem entrar na viewport
             threshold: 0
         };
 
@@ -68,10 +68,31 @@
 
     // --- Core Functions (Hoisted) ---
 
+    // Pre-load all quiz images to browser cache
+    function preloadAllQuizImages() {
+        const imagesToPreload = [
+            'assets/media/protocolo-gelatina.webp',
+            'assets/media/resultado-gomita.webp',
+            'assets/media/resultado-fernanda.webp',
+            'assets/media/resultado-rosana.webp',
+            'assets/media/resultado-nereide.webp'
+        ];
+        
+        imagesToPreload.forEach(url => {
+            const img = new Image();
+            img.src = url;
+        });
+        console.log('All quiz images preloaded to cache');
+    }
+
     // We assign these to window so HTML inline onclick handlers can find them.
     window.startQuiz = function() {
         console.log("startQuiz called");
         state.isQuizActive = true;
+        
+        // Pré-carregar todas as imagens do quiz na cache do navegador
+        preloadAllQuizImages();
+        
         if(dom.staticTop) dom.staticTop.style.display = 'none';
         if(dom.staticIngredients) dom.staticIngredients.style.display = 'none';
         if(dom.quizContainer) {
@@ -86,9 +107,33 @@
         renderStep();
     };
 
+    // Mapa de imagens por etapa
+    const stepImages = {
+        8: 'assets/media/protocolo-gelatina.webp',
+        9: ['assets/media/resultado-gomita.webp', 'assets/media/resultado-fernanda.webp'],
+        15: 'assets/media/resultado-rosana.webp',
+        16: 'assets/media/resultado-nereide.webp'
+    };
+
+    // Pré-carregar imagem específica
+    function preloadImage(url) {
+        if (!url) return;
+        const urls = Array.isArray(url) ? url : [url];
+        urls.forEach(u => {
+            const img = new Image();
+            img.src = u;
+        });
+    }
+
     window.nextStep = function() {
         if (state.step < state.totalSteps) {
             state.step++;
+            
+            // Pré-carregar imagem da etapa atual E das próximas 2
+            preloadImage(stepImages[state.step]);
+            preloadImage(stepImages[state.step + 1]);
+            preloadImage(stepImages[state.step + 2]);
+            
             updateProgress();
             renderStep();
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -98,6 +143,10 @@
     window.goToVideoPage = function() {
         state.step = 17;
         state.isQuizActive = true;
+        
+        // Pré-carregar todas as imagens antes de ir para página do vídeo
+        preloadAllQuizImages();
+        
         if(dom.staticTop) dom.staticTop.style.display = 'none';
         if(dom.staticIngredients) dom.staticIngredients.style.display = 'none';
         if(dom.quizContainer) {
