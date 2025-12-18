@@ -290,7 +290,10 @@
                             </p>
                         </div>
 
-                        <p class="text-center text-gray-600 text-sm font-medium mb-2">Mira la transformación de Rosana.</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 text-center uppercase">Mira la transformación de Rosana</h3>
+                        <div class="w-full mb-6">
+                            <img src="assets/media/resultado-rosana.webp" alt="Transformación de Rosana - Antes y Después" class="w-full rounded-lg">
+                        </div>
                         ${renderContinueButton()}
                     </div>
                 `;
