@@ -64,8 +64,8 @@
         .absolute{position:absolute}
     </style>
     
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind (async para não bloquear render) -->
+    <script async src="https://cdn.tailwindcss.com"></script>
     
     <!-- Fontes com display=swap para evitar FOIT -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -75,23 +75,31 @@
     <link rel="stylesheet" href="assets/style.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="assets/style.css"></noscript>
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              'kiwi-green': '#85c440',
-              'kiwi-dark-green': '#6da530',
-              'kiwi-text': '#333333',
-              'kiwi-gray': '#666666',
-              'kiwi-light-gray': '#f2f2f2',
-            },
-            fontFamily: {
-              serif: ['Merriweather', 'serif'],
-              sans: ['Open Sans', 'sans-serif'],
+      // Aguardar Tailwind estar disponível antes de configurar
+      function setupTailwindConfig() {
+        if (typeof tailwind !== 'undefined') {
+          tailwind.config = {
+            theme: {
+              extend: {
+                colors: {
+                  'kiwi-green': '#85c440',
+                  'kiwi-dark-green': '#6da530',
+                  'kiwi-text': '#333333',
+                  'kiwi-gray': '#666666',
+                  'kiwi-light-gray': '#f2f2f2',
+                },
+                fontFamily: {
+                  serif: ['Merriweather', 'serif'],
+                  sans: ['Open Sans', 'sans-serif'],
+                }
+              }
             }
-          }
+          };
+        } else {
+          setTimeout(setupTailwindConfig, 100);
         }
       }
+      setupTailwindConfig();
     </script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
@@ -127,7 +135,6 @@
         });
       });
     </script>
-<script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js", s.async=!0,document.head.appendChild(s); </script>
 </head>
 <body class="bg-[#f4f4f4] font-sans">
     <div id="app" class="min-h-screen bg-[#f4f4f4] max-w-md mx-auto shadow-2xl overflow-hidden pb-20">
@@ -189,8 +196,8 @@
             </div>
 
             <!-- Media Section -->
-            <div class="w-full">
-                <img src="assets/media/gelatina-gomita.webp" alt="Gelatina Reductora" class="w-full" fetchpriority="high" decoding="async">
+            <div class="w-full" style="background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%); min-height: 300px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">
+                <img src="assets/media/gelatina-gomita.webp" alt="Gelatina Reductora" class="w-full" fetchpriority="high" decoding="async" onload="this.parentElement.style.background='none'">
             </div>
         </div>
 
@@ -320,5 +327,15 @@
     </div>
     
     <script src="assets/script.js" defer></script>
+    
+    <!-- Carregar SDK da VTurb após tudo pronto -->
+    <script>
+        window.addEventListener('load', function() {
+            var s = document.createElement('script');
+            s.src = 'https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js';
+            s.async = true;
+            document.head.appendChild(s);
+        });
+    </script>
 </body>
 </html>

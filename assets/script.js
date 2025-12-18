@@ -47,7 +47,7 @@
         // Pré-carregar imagens quando estiverem ~2000px antes de ficar visível
         const observerOptions = {
             root: null,
-            rootMargin: '2000px 0px', // Carregar 2000px antes da imagem entrar na viewport
+            rootMargin: '2000px 0px',
             threshold: 0
         };
 
@@ -56,10 +56,17 @@
                 if (entry.isIntersecting || entry.intersectionRatio > 0) {
                     const img = entry.target;
                     if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
+                        // Usar requestIdleCallback para não bloquear thread principal
+                        if (window.requestIdleCallback) {
+                            requestIdleCallback(() => {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                            });
+                        } else {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
                         imageObserver.unobserve(img);
-                        console.log('Image preloaded:', img.alt);
                     }
                 }
             });
@@ -68,7 +75,7 @@
 
     // --- Core Functions (Hoisted) ---
 
-    // Pre-load all quiz images to browser cache
+    // Pre-load all quiz images to browser cache using requestIdleCallback
     function preloadAllQuizImages() {
         const imagesToPreload = [
             'assets/media/protocolo-gelatina.webp',
@@ -78,11 +85,23 @@
             'assets/media/resultado-nereide.webp'
         ];
         
-        imagesToPreload.forEach(url => {
-            const img = new Image();
-            img.src = url;
-        });
-        console.log('All quiz images preloaded to cache');
+        // Preload images in idle time, não bloqueando interações
+        if (window.requestIdleCallback) {
+            requestIdleCallback(() => {
+                imagesToPreload.forEach(url => {
+                    const img = new Image();
+                    img.src = url;
+                });
+            });
+        } else {
+            // Fallback para navegadores antigos
+            setTimeout(() => {
+                imagesToPreload.forEach(url => {
+                    const img = new Image();
+                    img.src = url;
+                });
+            }, 1000);
+        }
     }
 
     // We assign these to window so HTML inline onclick handlers can find them.
