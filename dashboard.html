@@ -270,21 +270,22 @@
         }
 
         function updateDashboard(data) {
-            // Calcular totales
-            const totalAbandonments = Object.values(data.abandonment).reduce((a, b) => a + b, 0);
-            const totalVisitors = Math.max(totalAbandonments, 1);
+            // Usar datos de sessions para cálculos correctos
+            const totalVisitors = data.totalSessions || 0;
+            const completedSessions = data.completedSessions || 0;
+            const abandonedSessions = data.abandonedSessions || 0;
 
             document.getElementById('totalVisitors').textContent = totalVisitors;
             document.getElementById('abandonmentRate').textContent = 
-                Math.round((totalAbandonments / Math.max(totalVisitors, 1)) * 100) + '%';
+                totalVisitors > 0 ? Math.round((abandonedSessions / totalVisitors) * 100) + '%' : '0%';
             document.getElementById('completionRate').textContent = 
-                Math.round(((totalVisitors - totalAbandonments) / Math.max(totalVisitors, 1)) * 100) + '%';
+                totalVisitors > 0 ? Math.round((completedSessions / totalVisitors) * 100) + '%' : '0%';
 
             // Actualizar gráfico de abandono
-            updateAbandonmentChart(data.abandonment, totalVisitors);
+            updateAbandonmentChart(data.abandonment, totalVisitors > 0 ? totalVisitors : 1);
 
             // Actualizar tabla de abandono
-            updateAbandonmentTable(data.abandonment, totalVisitors);
+            updateAbandonmentTable(data.abandonment, totalVisitors > 0 ? totalVisitors : 1);
 
             // Actualizar respuestas más frecuentes
             updateAnswersDisplay(data.answers);

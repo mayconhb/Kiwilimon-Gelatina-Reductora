@@ -21,50 +21,77 @@ export default async function handler(req, res) {
     const { startDate, endDate } = req.query;
     
     if (!supabase) {
-      return res.json({ abandonment: {}, answers: {}, error: 'Supabase not configured' });
+      return res.json({ abandonment: {}, answers: {}, sessions: {}, error: 'Supabase not configured' });
     }
 
-    let query1 = supabase.from('abandonment').select('*');
-    let query2 = supabase.from('quiz_answers').select('*');
+    let queryAbandon = supabase.from('abandonment').select('*');
+    let queryAnswers = supabase.from('quiz_answers').select('*');
+    let querySessions = supabase.from('sessions').select('*');
     
     if (startDate) {
-      query1 = query1.gte('timestamp', new Date(startDate).toISOString());
-      query2 = query2.gte('timestamp', new Date(startDate).toISOString());
+      queryAbandon = queryAbandon.gte('timestamp', new Date(startDate).toISOString());
+      queryAnswers = queryAnswers.gte('timestamp', new Date(startDate).toISOString());
+      querySessions = querySessions.gte('created_at', new Date(startDate).toISOString());
     }
     
     if (endDate) {
       const end = new Date(endDate);
       end.setHours(23, 59, 59, 999);
-      query1 = query1.lte('timestamp', end.toISOString());
-      query2 = query2.lte('timestamp', end.toISOString());
+      queryAbandon = queryAbandon.lte('timestamp', end.toISOString());
+      queryAnswers = queryAnswers.lte('timestamp', end.toISOString());
+      querySessions = querySessions.lte('created_at', end.toISOString());
     }
     
-    const [abandonmentData, answersData] = await Promise.all([
-      query1,
-      query2
+    const [abandonmentData, answersData, sessionsData] = await Promise.all([
+      queryAbandon,
+      queryAnswers,
+      querySessions
     ]);
     
-    if (abandonmentData.error || answersData.error) {
-      throw abandonmentData.error || answersData.error;
+    if (abandonmentData.error || answersData.error || sessionsData.error) {
+      throw abandonmentData.error || answersData.error || sessionsData.error;
     }
     
     const abandonment = {};
     const answers = {};
+    const sessions = {
+      total: 0,
+      completed: 0,
+      abandoned: 0,
+      active: 0
+    };
     
     for (let i = 1; i <= 17; i++) {
       abandonment[i] = 0;
     }
     
+    // Count sessions by status
+    sessions.total = sessionsData.data.length;
+    sessionsData.data.forEach(session => {
+      if (session.status === 'completed') sessions.completed++;
+      else if (session.status === 'abandoned') sessions.abandoned++;
+      else if (session.status === 'active') sessions.active++;
+    });
+
+    // Count abandonment by step (only from abandoned sessions)
     abandonmentData.data.forEach(row => {
       abandonment[row.step] = (abandonment[row.step] || 0) + 1;
     });
     
+    // Count answers by step
     answersData.data.forEach(row => {
       if (!answers[row.step]) answers[row.step] = {};
       answers[row.step][row.answer] = (answers[row.step][row.answer] || 0) + 1;
     });
     
-    res.status(200).json({ abandonment, answers });
+    res.status(200).json({ 
+      abandonment, 
+      answers,
+      sessions,
+      totalSessions: sessions.total,
+      completedSessions: sessions.completed,
+      abandonedSessions: sessions.abandoned
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

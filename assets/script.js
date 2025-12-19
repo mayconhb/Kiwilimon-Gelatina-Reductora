@@ -18,6 +18,24 @@
         ? 'http://localhost:3000' 
         : window.location.origin;
 
+    let sessionCreated = false;
+
+    async function createSession() {
+        if (sessionCreated) return;
+        try {
+            await fetch(`${API_URL}/api/session`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: state.sessionId
+                })
+            });
+            sessionCreated = true;
+        } catch (error) {
+            console.log('Session creation failed or not available');
+        }
+    }
+
     async function trackAnswer(step, answer) {
         try {
             await fetch(`${API_URL}/api/answer`, {
@@ -41,7 +59,23 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     step: step,
-                    sessionId: state.sessionId
+                    sessionId: state.sessionId,
+                    status: 'abandoned'
+                })
+            });
+        } catch (error) {
+            console.log('Analytics disabled or not available');
+        }
+    }
+
+    async function trackCompletion() {
+        try {
+            await fetch(`${API_URL}/api/completion`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: state.sessionId,
+                    finalStep: state.step
                 })
             });
         } catch (error) {
@@ -146,6 +180,7 @@
     window.startQuiz = function() {
         console.log("startQuiz called");
         state.isQuizActive = true;
+        createSession();
         
         // Pré-carregar todas as imagens do quiz na cache do navegador
         preloadAllQuizImages();
@@ -510,6 +545,7 @@
                 `;
                 break;
             case 17:
+                trackCompletion();
                 content = `
                     <div class="py-4 text-center">
                     <h3 class="text-lg font-bold text-gray-800 mb-4 uppercase leading-snug">

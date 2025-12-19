@@ -18,28 +18,19 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { step, sessionId, status } = req.body;
-    const now = new Date();
+    const { sessionId, finalStep } = req.body;
     
     if (!supabase) {
       return res.status(500).json({ error: 'Supabase not configured' });
     }
 
-    // Update session status to abandoned
-    await supabase.from('sessions')
+    const { error } = await supabase.from('sessions')
       .update({
-        status: 'abandoned',
-        highest_step: step,
-        abandoned_at: now.toISOString()
+        status: 'completed',
+        highest_step: finalStep,
+        completed_at: new Date().toISOString()
       })
       .eq('session_id', sessionId);
-
-    // Record abandonment event
-    const { error } = await supabase.from('abandonment').insert({
-      step,
-      session_id: sessionId,
-      timestamp: now.toISOString()
-    });
     
     if (error) {
       return res.status(500).json({ error: error.message });
