@@ -1,10 +1,12 @@
-import express from 'express';
+export default function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Content-Type', 'application/json');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
-const app = express();
-
-app.get('/', (req, res) => {
   const supabaseConfigured = !!(process.env.SUPABASE_URL && process.env.SUPABASE_KEY);
-  res.json({ status: 'ok', supabaseConfigured });
-});
-
-export default app;
+  res.status(200).json({ status: 'ok', supabaseConfigured });
+}
