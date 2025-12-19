@@ -12,6 +12,9 @@
         .metric-value { font-size: 28px; font-weight: bold; color: #85c440; }
         .metric-label { color: #666; font-size: 14px; margin-top: 8px; }
         .chart-container { position: relative; height: 300px; margin-top: 20px; }
+        .filter-btn { padding: 8px 16px; border-radius: 6px; border: 2px solid #e5e7eb; cursor: pointer; transition: all 0.3s; font-weight: 500; }
+        .filter-btn.active { background: #85c440; color: white; border-color: #85c440; }
+        .filter-btn:hover { border-color: #85c440; color: #85c440; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -20,6 +23,39 @@
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Dashboard de Métricas</h1>
             <p class="text-gray-600">Analiza el rendimiento del quiz y el abandono por etapa</p>
+        </div>
+
+        <!-- Filtros de Fecha -->
+        <div class="dashboard-card mb-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Filtrar por Fecha</h3>
+            <div class="flex flex-wrap gap-3 mb-4">
+                <button class="filter-btn active" onclick="filterByDays(0)">Hoy</button>
+                <button class="filter-btn" onclick="filterByDays(1)">Ayer</button>
+                <button class="filter-btn" onclick="filterByDays(7)">Últimos 7 días</button>
+                <button class="filter-btn" onclick="filterByDays(30)">Últimos 30 días</button>
+                <button class="filter-btn" onclick="toggleCustomDatePicker()">Personalizado</button>
+            </div>
+            
+            <!-- Custom Date Picker (Hidden by default) -->
+            <div id="customDatePicker" class="hidden mt-4 p-4 bg-gray-50 rounded-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Fecha Inicial</label>
+                        <input type="date" id="startDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Fecha Final</label>
+                        <input type="date" id="endDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                </div>
+                <button onclick="filterByCustomDate()" class="mt-4 bg-kiwi-green text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-600">
+                    Aplicar Filtro
+                </button>
+            </div>
+
+            <div class="text-sm text-gray-600 mt-2">
+                <strong>Período mostrado:</strong> <span id="dateRangeDisplay">Hoy</span> (Horario Brasilia)
+            </div>
         </div>
 
         <!-- Cards Principais -->
@@ -74,7 +110,7 @@
 
         <!-- Footer -->
         <div class="text-center text-gray-500 text-sm mt-8">
-            <p>Los datos se actualizan automáticamente cada 10 segundos</p>
+            <p>Los datos se actualizan automáticamente. Última actualización: <span id="lastUpdate">-</span></p>
         </div>
     </div>
 
@@ -104,22 +140,139 @@
         };
 
         let abandonmentChart = null;
+        let currentFilter = { days: 0, startDate: null, endDate: null };
+
+        // Utilidades de fecha para Brasilia
+        function getBrazilDate(date) {
+            return new Date(date.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+        }
+
+        function getToday() {
+            const today = getBrazilDate(new Date());
+            today.setHours(0, 0, 0, 0);
+            return today;
+        }
+
+        function formatDateBrazil(date) {
+            return date.toLocaleDateString('es-ES', { 
+                timeZone: 'America/Sao_Paulo',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+        }
+
+        function getDateRange(days) {
+            let endDate = getToday();
+            let startDate = new Date(endDate);
+            
+            if (days === 0) {
+                // Hoy
+                startDate = new Date(endDate);
+                endDate = new Date(endDate);
+                endDate.setHours(23, 59, 59, 999);
+            } else {
+                startDate.setDate(startDate.getDate() - (days - 1));
+                endDate.setHours(23, 59, 59, 999);
+            }
+            
+            return { startDate, endDate };
+        }
+
+        function updateDateRangeDisplay() {
+            let displayText = 'Hoy';
+            
+            if (currentFilter.days === 1) {
+                displayText = 'Ayer';
+            } else if (currentFilter.days === 7) {
+                displayText = 'Últimos 7 días';
+            } else if (currentFilter.days === 30) {
+                displayText = 'Últimos 30 días';
+            } else if (currentFilter.startDate && currentFilter.endDate) {
+                displayText = `${formatDateBrazil(currentFilter.startDate)} a ${formatDateBrazil(currentFilter.endDate)}`;
+            }
+            
+            document.getElementById('dateRangeDisplay').textContent = displayText;
+        }
+
+        function filterByDays(days) {
+            currentFilter = { days, startDate: null, endDate: null };
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Hide custom picker
+            document.getElementById('customDatePicker').classList.add('hidden');
+            
+            updateDateRangeDisplay();
+            loadMetrics();
+        }
+
+        function toggleCustomDatePicker() {
+            const picker = document.getElementById('customDatePicker');
+            picker.classList.toggle('hidden');
+            
+            // Remove active state from other buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function filterByCustomDate() {
+            const startDateInput = document.getElementById('startDate').value;
+            const endDateInput = document.getElementById('endDate').value;
+            
+            if (!startDateInput || !endDateInput) {
+                alert('Por favor selecciona ambas fechas');
+                return;
+            }
+            
+            currentFilter = {
+                days: null,
+                startDate: new Date(startDateInput),
+                endDate: new Date(endDateInput)
+            };
+            
+            updateDateRangeDisplay();
+            loadMetrics();
+        }
 
         async function loadMetrics() {
             try {
-                const response = await fetch(`${API_URL}/api/metrics`);
+                let url = `${API_URL}/api/metrics`;
+                
+                if (currentFilter.days !== null) {
+                    const { startDate, endDate } = getDateRange(currentFilter.days);
+                    url += `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
+                } else if (currentFilter.startDate && currentFilter.endDate) {
+                    url += `?startDate=${currentFilter.startDate.toISOString()}&endDate=${currentFilter.endDate.toISOString()}`;
+                }
+                
+                const response = await fetch(url);
                 const data = await response.json();
-
+                
                 updateDashboard(data);
+                updateLastUpdate();
             } catch (error) {
                 console.error('Error loading metrics:', error);
             }
         }
 
+        function updateLastUpdate() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('es-ES', { 
+                timeZone: 'America/Sao_Paulo',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('lastUpdate').textContent = timeStr;
+        }
+
         function updateDashboard(data) {
             // Calcular totales
             const totalAbandonments = Object.values(data.abandonment).reduce((a, b) => a + b, 0);
-            const totalVisitors = Math.max(totalAbandonments, 1); // Al menos 1
+            const totalVisitors = Math.max(totalAbandonments, 1);
 
             document.getElementById('totalVisitors').textContent = totalVisitors;
             document.getElementById('abandonmentRate').textContent = 
@@ -206,7 +359,7 @@
                 const total = Object.values(stageAnswers).reduce((a, b) => a + b, 0);
                 const sorted = Object.entries(stageAnswers)
                     .sort((a, b) => b[1] - a[1])
-                    .slice(0, 3); // Top 3 respuestas
+                    .slice(0, 3);
 
                 const stageDiv = document.createElement('div');
                 stageDiv.className = 'bg-gray-50 p-4 rounded-lg';
@@ -237,7 +390,7 @@
             }
         }
 
-        // Cargar datos iniciales y actualizar cada 10 segundos
+        // Cargar datos iniciales
         loadMetrics();
         setInterval(loadMetrics, 10000);
     </script>

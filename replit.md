@@ -4,139 +4,179 @@
 
 This is a static marketing landing page for a "Gelatina Reductora" (weight-loss gelatin) recipe promotion. The application presents an interactive quiz-style experience that guides users through a multi-step funnel before directing them to a Hotmart payment page. The page mimics the style of Kiwilimón, a popular Spanish-language recipe website.
 
-**NEW (Dezembro 2025)**: Dashboard de Métricas adicionado para análise de abandono por etapa e respostas mais frequentes do quiz.
+**NEW (Dezembro 2025)**: Dashboard de Métricas con Supabase integrado, filtros de fecha y horario de Brasilia.
 
 ## User Preferences
 
-Preferred communication style: Simple, everyday language. Portuguese/Spanish multilingual support preferred.
+Preferred communication style: Simple, everyday language. Deployed on Vercel + Supabase. Dashboard in Brazil timezone (America/Sao_Paulo).
 
 ## System Architecture
 
 ### Frontend Architecture
 
 - **Technology**: Vanilla HTML5, CSS3, and JavaScript (no frameworks)
-- **Styling**: Combination of Tailwind CSS (via CDN) and custom CSS with inline critical CSS
-- **JavaScript Pattern**: Single IIFE with state management for quiz progression
+- **Styling**: Tailwind CSS (via CDN) and custom CSS with inline critical CSS
 - **State Management**: Object-based state tracking with session ID and analytics
+- **Hosted**: Static files served by Vercel
 
-### Backend Architecture (NEW)
+### Backend Architecture (Express.js + Supabase)
 
-- **Technology**: Express.js with CORS support
-- **Purpose**: Collect and aggregate user analytics data
-- **Storage**: In-memory storage (ready for Supabase integration)
+- **Technology**: Node.js Express.js with CORS support
+- **Database**: Supabase PostgreSQL
+- **Purpose**: Collect user analytics and serve data to dashboard
+- **Timezone**: All timestamps stored in UTC, converted to Brasilia (America/Sao_Paulo) in dashboard
 - **API Endpoints**:
   - `POST /api/answer` - Record quiz answers
   - `POST /api/abandonment` - Track user abandonment at each stage
-  - `GET /api/metrics` - Retrieve aggregated metrics
+  - `GET /api/metrics?startDate=ISO&endDate=ISO` - Retrieve filtered metrics
+  - `GET /api/health` - Health check
 
-### Dashboard (NEW)
+### Dashboard Features
 
 - **Location**: `/dashboard.html`
-- **Purpose**: Visualize quiz completion rates, abandonment by stage, and most popular answers
-- **Features**:
-  - Real-time metrics updates (every 10 seconds)
-  - Abandonment rate by stage with percentages
-  - Top 3 answers per question
-  - Visual charts using Chart.js
-  - Responsive design
+- **Date Filters**: Today, Yesterday, Last 7 days, Last 30 days, Custom range
+- **Timezone**: All dates displayed in Brasilia time (UTC-3/UTC-2)
+- **Metrics Shown**:
+  - Abandonment by stage with percentages
+  - Top 3 answers per quiz question
+  - Total visitors and completion rate
+  - Real-time updates every 10 seconds
 
-### Application Flow
+## Deployment Configuration
 
-1. Static landing page with recipe content and social proof
-2. Interactive quiz with 17 steps guiding users through questions
-3. Quiz events tracked in real-time via backend API
-4. Final redirect to Hotmart payment gateway
-5. Dashboard accessible at `/dashboard.html` for analytics review
+### Vercel Deployment
 
-## Recent Changes (Dezembro 2025)
+1. **Connect Repository**: Push to GitHub and deploy via Vercel
+2. **Environment Variables**: Set in Vercel dashboard:
+   - `SUPABASE_URL` - Your Supabase project URL
+   - `SUPABASE_KEY` - Your Supabase anon public key
+   - `NODE_ENV` - Set to "production"
 
-1. **Backend Server**: Added Express.js server (`server.js`) to collect analytics
-2. **Analytics Tracking**: Modified `assets/script.js` to track:
-   - User session IDs
-   - Quiz answers with step context
-   - Abandonment tracking at each stage
-3. **Dashboard**: Created comprehensive dashboard showing:
-   - Total visitors and completion rates
-   - Abandonment percentage by stage with descriptions
-   - Most popular answers for each quiz question
-4. **Workflows**: Configured two parallel workflows:
-   - Frontend: `serve -s . -l 5000` on port 5000
-   - Backend: `node server.js` on port 3000
+3. **Build Settings**:
+   - Build Command: `npm install`
+   - Output Directory: `.` (root)
+   - Install Command: `npm install`
 
-## Deployment & Development
+4. **Frontend** is served as static files
+5. **Backend API** runs as Node.js serverless functions
 
-### Development Workflows
+### Supabase Setup
 
-| Workflow | Command | Port | Output |
-|----------|---------|------|--------|
-| Frontend Dev | `serve -s . -l 5000` | 5000 | webview |
-| Backend Analytics | `node server.js` | 3000 | console |
+1. **Create Project** at https://supabase.com
+2. **Run SQL Migration**:
+   - Open Supabase SQL Editor
+   - Copy and run contents of `supabase.sql`
+   - Creates `abandonment` and `quiz_answers` tables
+3. **Get Credentials**:
+   - Go to Settings > API
+   - Copy "Project URL" → `SUPABASE_URL`
+   - Copy "anon public" key → `SUPABASE_KEY`
 
-### Performance Optimizations
+### Local Development
 
-- **Critical CSS inlined** - Estilos essenciais inline para renderização imediata
-- **Preconnect/DNS-prefetch** - Conexões antecipadas para Hotmart, fonts, CDNs
-- **Lazy loading** - Todas as imagens abaixo do fold com loading="lazy"
-- **Fontes otimizadas** - display=swap para evitar FOIT
-- **Scripts deferred** - script.js com defer para não bloquear render
+```bash
+# Install dependencies
+npm install
 
-## External Dependencies
+# Start frontend (port 5000)
+npm start
 
-### Runtime Dependencies
+# In another terminal, start backend (port 3000)
+npm run server
 
-| Dependency | Purpose | Version |
-|------------|---------|---------|
-| `serve` | Static file server | ^14.2.5 |
-| `express` | API backend | ^5.2.1 |
-| `cors` | CORS middleware | ^2.8.5 |
-| `@supabase/supabase-js` | Database (optional) | ^2.89.0 |
+# Set environment variables
+export SUPABASE_URL=your-url
+export SUPABASE_KEY=your-key
 
-### External Services & CDNs
+# Dashboard accessible at http://localhost:5000/dashboard.html
+```
 
-| Service | Purpose |
-|---------|---------|
-| Hotmart | Payment processing |
-| Tailwind CSS CDN | CSS framework |
-| Google Fonts | Typography |
-| Chart.js CDN | Dashboard charts |
+## Key Features
+
+### Analytics Tracking
+
+- **Session ID**: Unique identifier for each user
+- **Timestamp**: All events timestamped in UTC
+- **Answer Recording**: Tracks which quiz option user selected
+- **Abandonment Tracking**: Records which step user abandoned
+
+### Dashboard Analytics
+
+- **Date Filtering**: Query data by custom date ranges
+- **Timezone Conversion**: All dates shown in Brazil time
+- **Performance Metrics**: 
+  - Abandonment rate per stage
+  - Most popular answers per question
+  - Completion funnel analysis
 
 ## Project Structure
 
 ```
 .
 ├── index.html              # Main landing page
-├── dashboard.html          # Analytics dashboard (NEW)
-├── server.js              # Express backend API (NEW)
+├── dashboard.html          # Analytics dashboard
+├── server.js              # Express backend + Supabase
+├── supabase.sql           # Database schema
+├── .env.example           # Environment variables template
+├── vercel.json            # Vercel deployment config
 ├── assets/
 │   ├── script.js          # Frontend logic with analytics
 │   ├── style.css          # Custom styles
-│   └── media/             # Product images (WebP format)
+│   └── media/             # Product images (WebP)
 ├── package.json           # Dependencies
 └── replit.md             # This file
 ```
 
-## Next Steps for Supabase Integration
+## Environment Variables
 
-To enable persistent data storage with Supabase:
+Required for production:
+- `SUPABASE_URL` - Supabase project URL (starts with https://)
+- `SUPABASE_KEY` - Supabase anon public key
+- `NODE_ENV` - Set to "production" on Vercel
 
-1. Create Supabase tables:
-   - `abandonment` (step, session_id, timestamp)
-   - `quiz_answers` (step, answer, session_id, timestamp)
+See `.env.example` for template.
 
-2. Set environment variables:
-   - `SUPABASE_URL`
-   - `SUPABASE_KEY`
+## Performance Optimizations
 
-3. Uncomment Supabase code in `server.js`
+- Lazy loading for images below fold
+- Critical CSS inlined for fast initial render
+- Preconnect/DNS-prefetch for external resources
+- All images in WebP format
+- Deferred script loading to avoid blocking render
 
-## Accessing the Dashboard
+## Database Schema
 
-- **Local Development**: `http://localhost:5000/dashboard.html`
-- **Production**: `https://your-deployed-site.com/dashboard.html`
-- **Backend API**: `http://localhost:3000/api/metrics`
+### abandonment table
+- `id` - Primary key
+- `step` - Quiz step where user abandoned (1-17)
+- `session_id` - Unique session identifier
+- `timestamp` - When abandonment occurred (UTC)
+- `created_at` - Record creation time
 
-The dashboard updates automatically every 10 seconds and displays:
-- Total abandonment rate across all stages
-- Completion rate (stage 17 reach)
-- Stage-by-stage abandonment with percentages
-- Most popular answers for each quiz question
+### quiz_answers table
+- `id` - Primary key
+- `step` - Quiz step number
+- `answer` - User's selected answer text
+- `session_id` - Unique session identifier
+- `timestamp` - When answer was recorded (UTC)
+- `created_at` - Record creation time
+
+Both tables have indexes on `timestamp`, `step`, and `session_id` for performance.
+
+## Troubleshooting
+
+### Dashboard shows "Sin datos disponibles"
+- Check that Supabase credentials are correctly set
+- Verify tables exist in Supabase
+- Ensure API is returning data: `curl https://your-domain/api/health`
+
+### Timestamps not in Brasilia timezone
+- Dashboard automatically converts UTC to America/Sao_Paulo
+- Check browser timezone settings
+- All calculations done client-side in JavaScript
+
+### API errors on Vercel
+- Verify environment variables are set in Vercel dashboard
+- Check Vercel function logs in deployment
+- Ensure Supabase URL and key are correct
+- Test locally with `npm run server` first

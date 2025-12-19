@@ -1,6 +1,17 @@
 {
-  "framework": null,
-  "buildCommand": "",
-  "installCommand": "",
-  "outputDirectory": "."
+  "buildCommand": "npm install",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "http://localhost:3000/api/$1"
+    }
+  ]
 }
