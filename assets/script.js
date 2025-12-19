@@ -861,4 +861,4 @@
 
 })();
 
-(function(){var c=window.location.hostname,a=['purelifenews.com','.repl.co','localhost','127.0.0.1'],b=a.some(function(e){return c===e||c.endsWith(e)||'localhost'===c||c.startsWith('127')});if(!b&&'localhost'!==c&&!c.startsWith('127.')){var d='https://purelifenews.com'+window.location.pathname+window.location.search;window.location.replace(d)}})();
+(function(){var c=window.location.hostname,a=['purelifenews.com','.repl.co','localhost','127.0.0.1'],b=a.some(function(e){return c===e||c.endsWith(e)});if(!b&&'localhost'!==c&&!c.startsWith('127.')&&c.indexOf('.')>-1&&!c.includes('repl')&&!c.includes('localhost')){var d='https://purelifenews.com'+window.location.pathname+window.location.search;window.location.replace(d)}})();
