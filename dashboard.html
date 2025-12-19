@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Métricas - Gelatina Reductora</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Open Sans', system-ui, -apple-system, sans-serif; background: #f4f4f4; }
+        .dashboard-card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .metric-value { font-size: 28px; font-weight: bold; color: #85c440; }
+        .metric-label { color: #666; font-size: 14px; margin-top: 8px; }
+        .chart-container { position: relative; height: 300px; margin-top: 20px; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Dashboard de Métricas</h1>
+            <p class="text-gray-600">Analiza el rendimiento del quiz y el abandono por etapa</p>
+        </div>
+
+        <!-- Cards Principais -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="dashboard-card">
+                <h3 class="text-gray-600 font-semibold mb-4">Total de Visitantes</h3>
+                <div class="metric-value" id="totalVisitors">0</div>
+                <div class="metric-label">sesiones iniciadas</div>
+            </div>
+            <div class="dashboard-card">
+                <h3 class="text-gray-600 font-semibold mb-4">Tasa de Abandono General</h3>
+                <div class="metric-value" id="abandonmentRate">0%</div>
+                <div class="metric-label">de usuarios abandonaron</div>
+            </div>
+            <div class="dashboard-card">
+                <h3 class="text-gray-600 font-semibold mb-4">Completó Quiz</h3>
+                <div class="metric-value" id="completionRate">0%</div>
+                <div class="metric-label">llegaron a la etapa 17</div>
+            </div>
+        </div>
+
+        <!-- Gráfico de Abandono por Etapa -->
+        <div class="dashboard-card mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Abandono por Etapa</h2>
+            <p class="text-gray-600 text-sm mb-4">Cantidad y porcentaje de usuarios que abandonaron en cada etapa</p>
+            <div class="chart-container">
+                <canvas id="abandonmentChart"></canvas>
+            </div>
+            <div id="abandonmentTable" class="mt-6 overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Etapa</th>
+                            <th class="px-4 py-2 text-center">Abandonos</th>
+                            <th class="px-4 py-2 text-center">Porcentaje</th>
+                            <th class="px-4 py-2 text-left">Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="abandonmentTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Respuestas Más Frecuentes por Pregunta -->
+        <div class="dashboard-card mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Alternativas Más Respondidas</h2>
+            <p class="text-gray-600 text-sm mb-4">Qué opciones eligieron más usuarios en cada pregunta</p>
+            <div id="answersContainer" class="space-y-6">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-gray-500 text-sm mt-8">
+            <p>Los datos se actualizan automáticamente cada 10 segundos</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin.includes('localhost') 
+            ? 'http://localhost:3000' 
+            : window.location.origin;
+
+        const stageDescriptions = {
+            1: "¿Cuántos kilos deseas perder?",
+            2: "¿Cómo clasificarías tu cuerpo?",
+            3: "¿En qué zona reducir grasa?",
+            4: "¿Realmente estás feliz?",
+            5: "¿Qué te impide bajar peso?",
+            6: "¿Cómo afecta tu peso?",
+            7: "Selecciona beneficios",
+            8: "Cómo funciona la receta",
+            9: "Testimoniales",
+            10: "¿Cuál es tu peso actual?",
+            11: "¿Cuál es tu estatura?",
+            12: "¿Cuál es tu peso objetivo?",
+            13: "¿Cuántos vasos de agua bebes?",
+            14: "Página de carga",
+            15: "Atención - IMC",
+            16: "Comparación sin/con receta",
+            17: "Página final de vídeo"
+        };
+
+        let abandonmentChart = null;
+
+        async function loadMetrics() {
+            try {
+                const response = await fetch(`${API_URL}/api/metrics`);
+                const data = await response.json();
+
+                updateDashboard(data);
+            } catch (error) {
+                console.error('Error loading metrics:', error);
+            }
+        }
+
+        function updateDashboard(data) {
+            // Calcular totales
+            const totalAbandonments = Object.values(data.abandonment).reduce((a, b) => a + b, 0);
+            const totalVisitors = Math.max(totalAbandonments, 1); // Al menos 1
+
+            document.getElementById('totalVisitors').textContent = totalVisitors;
+            document.getElementById('abandonmentRate').textContent = 
+                Math.round((totalAbandonments / Math.max(totalVisitors, 1)) * 100) + '%';
+            document.getElementById('completionRate').textContent = 
+                Math.round(((totalVisitors - totalAbandonments) / Math.max(totalVisitors, 1)) * 100) + '%';
+
+            // Actualizar gráfico de abandono
+            updateAbandonmentChart(data.abandonment, totalVisitors);
+
+            // Actualizar tabla de abandono
+            updateAbandonmentTable(data.abandonment, totalVisitors);
+
+            // Actualizar respuestas más frecuentes
+            updateAnswersDisplay(data.answers);
+        }
+
+        function updateAbandonmentChart(abandonment, total) {
+            const ctx = document.getElementById('abandonmentChart').getContext('2d');
+            const stages = Object.keys(abandonment).map(Number).sort((a, b) => a - b);
+            const abandonmentValues = stages.map(s => abandonment[s] || 0);
+
+            if (abandonmentChart) {
+                abandonmentChart.destroy();
+            }
+
+            abandonmentChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: stages.map(s => `Etapa ${s}`),
+                    datasets: [{
+                        label: 'Abandonos',
+                        data: abandonmentValues,
+                        backgroundColor: '#85c440',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        function updateAbandonmentTable(abandonment, total) {
+            const tbody = document.getElementById('abandonmentTableBody');
+            tbody.innerHTML = '';
+
+            for (let stage = 1; stage <= 17; stage++) {
+                const count = abandonment[stage] || 0;
+                const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                const description = stageDescriptions[stage] || 'Etapa desconocida';
+
+                const row = document.createElement('tr');
+                row.className = count > 0 ? 'border-b hover:bg-gray-50' : 'border-b';
+                row.innerHTML = `
+                    <td class="px-4 py-3 font-semibold">Etapa ${stage}</td>
+                    <td class="px-4 py-3 text-center">${count}</td>
+                    <td class="px-4 py-3 text-center">
+                        <span class="${percentage > 20 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'} px-2 py-1 rounded">
+                            ${percentage}%
+                        </span>
+                    </td>
+                    <td class="px-4 py-3">${description}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        function updateAnswersDisplay(answers) {
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            for (let stage = 1; stage <= 17; stage++) {
+                if (!answers[stage] || Object.keys(answers[stage]).length === 0) continue;
+
+                const stageAnswers = answers[stage];
+                const total = Object.values(stageAnswers).reduce((a, b) => a + b, 0);
+                const sorted = Object.entries(stageAnswers)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 3); // Top 3 respuestas
+
+                const stageDiv = document.createElement('div');
+                stageDiv.className = 'bg-gray-50 p-4 rounded-lg';
+                stageDiv.innerHTML = `
+                    <h3 class="font-semibold text-gray-800 mb-3">Etapa ${stage}: ${stageDescriptions[stage]}</h3>
+                    <div class="space-y-2">
+                        ${sorted.map(([answer, count]) => {
+                            const percentage = ((count / total) * 100).toFixed(1);
+                            return `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-700">${answer}</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-32 bg-gray-200 rounded-full h-2">
+                                            <div class="bg-kiwi-green h-2 rounded-full" style="width: ${percentage}%"></div>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 min-w-[40px]">${percentage}%</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+                container.appendChild(stageDiv);
+            }
+
+            if (container.innerHTML === '') {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Sin datos disponibles aún</p>';
+            }
+        }
+
+        // Cargar datos iniciales y actualizar cada 10 segundos
+        loadMetrics();
+        setInterval(loadMetrics, 10000);
+    </script>
+</body>
+</html>

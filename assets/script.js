@@ -8,8 +8,46 @@
         selectedBenefits: [],
         visibleComments: 3,
         isQuizActive: false,
-        totalSteps: 17
+        totalSteps: 17,
+        sessionId: 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        lastReportedStep: 0
     };
+
+    // --- Analytics Tracking ---
+    const API_URL = window.location.origin.includes('localhost') 
+        ? 'http://localhost:3000' 
+        : window.location.origin;
+
+    async function trackAnswer(step, answer) {
+        try {
+            await fetch(`${API_URL}/api/answer`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    step: step,
+                    answer: answer,
+                    sessionId: state.sessionId
+                })
+            });
+        } catch (error) {
+            console.log('Analytics disabled or not available');
+        }
+    }
+
+    async function trackAbandonment(step) {
+        try {
+            await fetch(`${API_URL}/api/abandonment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    step: step,
+                    sessionId: state.sessionId
+                })
+            });
+        } catch (error) {
+            console.log('Analytics disabled or not available');
+        }
+    }
 
     // --- Data ---
     const commentsData = [
@@ -157,6 +195,10 @@
             renderStep();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+    };
+
+    window.recordUserAnswer = function(answer) {
+        trackAnswer(state.step, answer);
     };
 
     window.goToVideoPage = function() {
@@ -566,7 +608,7 @@
 
     function renderQuizButton(text) {
         return `
-            <button onclick="nextStep()" class="w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 px-4 rounded-lg shadow-sm hover:bg-gray-50 hover:border-kiwi-green hover:text-kiwi-green transition-all mb-3 text-left flex items-center justify-between group">
+            <button onclick="recordUserAnswer('${text}'); nextStep();" class="w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 px-4 rounded-lg shadow-sm hover:bg-gray-50 hover:border-kiwi-green hover:text-kiwi-green transition-all mb-3 text-left flex items-center justify-between group">
                 ${text}
                 ${icons.chevronRight}
             </button>

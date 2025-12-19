@@ -3,9 +3,14 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "start": "serve -s . -l 5000"
+    "start": "serve -s . -l 5000",
+    "dev": "node server.js",
+    "server": "node server.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.89.0",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
     "serve": "^14.2.5"
   }
 }
