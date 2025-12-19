@@ -162,6 +162,9 @@
         }
         window.scrollTo({ top: 0, behavior: 'smooth' });
         renderStep();
+        
+        // Track abandonment if user leaves before completing
+        setupAbandonmentTracking();
     };
 
     // Mapa de imagens por etapa
@@ -604,6 +607,26 @@
         }
     }
 
+    // --- Abandonment Tracking ---
+    
+    function setupAbandonmentTracking() {
+        // Track when user leaves the quiz without completing it
+        const handleAbandonmentCheck = () => {
+            if (state.isQuizActive && state.step < 14) {
+                trackAbandonment(state.step);
+                console.log('Quiz abandoned at step:', state.step);
+            }
+        };
+        
+        // Listen for page unload/visibility change
+        window.addEventListener('beforeunload', handleAbandonmentCheck);
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && state.isQuizActive && state.step < 14) {
+                handleAbandonmentCheck();
+            }
+        });
+    }
+
     // --- Template Helpers ---
 
     function renderQuizButton(text) {
@@ -884,6 +907,9 @@
             if (dom.loadMoreBtn) {
                 dom.loadMoreBtn.addEventListener('click', window.loadMoreComments);
             }
+            
+            // Setup abandonment tracking on page load
+            setupAbandonmentTracking();
 
             // Initial Render
             if (dom.commentsList) {
