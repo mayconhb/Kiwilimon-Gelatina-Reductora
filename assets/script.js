@@ -227,6 +227,9 @@
             // Reset exit popup flag quando vai para próxima etapa
             if (state.step === 17) {
                 exitPopupShown = false;
+                // Push state to history so back button triggers popstate
+                history.pushState({ page: 'video', step: 17 }, '', window.location.href);
+                console.log('Pushed history state for video page');
             }
             
             // Pré-carregar imagem da etapa atual E das próximas 2
@@ -673,9 +676,12 @@
     // --- Exit Popup for Video Page (Step 17) ---
     
     let exitPopupShown = false;
-    const historyState = { isInQuiz: false };
+    let exitPopupCreated = false;
     
     function createExitPopup() {
+        if (exitPopupCreated) return;
+        exitPopupCreated = true;
+        
         const exitPopupHtml = `
             <div id="exit-popup-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:9999; animation:fadeIn 0.3s ease-in;">
                 <div id="exit-popup" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; border-radius:16px; padding:24px; max-width:90%; width:400px; box-shadow:0 20px 60px rgba(0,0,0,0.3); z-index:10000; animation:slideIn 0.3s ease-out;">
@@ -727,24 +733,36 @@
         tempDiv.innerHTML = exitPopupHtml;
         container.appendChild(tempDiv.firstElementChild);
         
-        const overlay = document.getElementById('exit-popup-overlay');
         const buyBtn = document.getElementById('exit-popup-buy');
         const closeBtn = document.getElementById('exit-popup-close');
         
-        buyBtn.onclick = () => {
-            window.location.href = 'https://pay.hotmart.com/I103092154N?off=94fwfp74&checkoutMode=10';
-        };
+        if (buyBtn) {
+            buyBtn.onclick = () => {
+                console.log('Redirect to checkout');
+                window.location.href = 'https://pay.hotmart.com/I103092154N?off=94fwfp74&checkoutMode=10';
+            };
+        }
         
-        closeBtn.onclick = () => {
-            exitPopupShown = false;
-            overlay.style.display = 'none';
-            history.back();
-        };
+        if (closeBtn) {
+            closeBtn.onclick = () => {
+                console.log('User closed popup, exiting');
+                exitPopupShown = false;
+                const overlay = document.getElementById('exit-popup-overlay');
+                if (overlay) overlay.style.display = 'none';
+                setTimeout(() => {
+                    window.history.back();
+                }, 100);
+            };
+        }
     }
     
     function showExitPopup() {
-        if (exitPopupShown || state.step !== 17) return;
+        if (exitPopupShown || state.step !== 17) {
+            console.log('Popup already shown or not on step 17. Step:', state.step);
+            return;
+        }
         
+        console.log('Showing exit popup');
         exitPopupShown = true;
         const overlay = document.getElementById('exit-popup-overlay');
         if (overlay) {
@@ -753,25 +771,23 @@
     }
     
     function setupExitPopupInterception() {
+        console.log('Setting up exit popup interception');
         createExitPopup();
         
-        // Para PC - intercepta beforeunload
-        window.addEventListener('beforeunload', (e) => {
+        // Usar popstate para detectar navegação (funciona em desktop e mobile)
+        window.addEventListener('popstate', (e) => {
+            console.log('Popstate detected, step:', state.step);
             if (state.step === 17 && !exitPopupShown) {
                 showExitPopup();
-                e.preventDefault();
-                e.returnValue = '';
-                return false;
+                // Push state novamente para prevenir que volta de verdade
+                history.pushState({ page: 'video' }, '', window.location.href);
             }
         });
         
-        // Para Mobile - intercepta botão de voltar
-        history.pushState(historyState, '', window.location.href);
-        
-        window.addEventListener('popstate', (e) => {
-            if (state.step === 17 && !exitPopupShown) {
-                showExitPopup();
-                history.pushState(historyState, '', window.location.href);
+        // Push um estado inicial quando chega na página de vídeo
+        window.addEventListener('beforeunload', (e) => {
+            if (state.step === 17) {
+                e.returnValue = 'Ainda tem uma oferta especial esperando por você!';
             }
         });
     }
