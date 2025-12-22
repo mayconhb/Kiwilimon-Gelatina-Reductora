@@ -629,13 +629,13 @@
                         
                         console.log('Video watched:', accumulatedWatchTime.toFixed(1), 's');
                         
-                        if (accumulatedWatchTime >= 10) {
+                        if (accumulatedWatchTime >= 480) {
                             buttonShown = true;
                             const ctaButton = document.getElementById('cta-button');
                             if (ctaButton) {
                                 ctaButton.style.display = 'flex';
                             }
-                            console.log('Video: Button shown after watching the video');
+                            console.log('Video: Button shown after 8 minutes of watch time');
                             window.removeEventListener('message', handleVideoMessage);
                         }
                     }
