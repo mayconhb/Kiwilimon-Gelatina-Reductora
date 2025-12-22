@@ -685,23 +685,45 @@
         const exitPopupHtml = `
             <div id="exit-popup-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:9999; animation:fadeIn 0.3s ease-in;">
                 <div id="exit-popup" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; border-radius:16px; padding:24px; max-width:90%; width:400px; box-shadow:0 20px 60px rgba(0,0,0,0.3); z-index:10000; animation:slideIn 0.3s ease-out;">
-                    <h2 style="font-size:24px; font-weight:bold; color:#333; margin:0 0 16px 0; text-align:center;">¡Espera un momento!</h2>
-                    <p style="font-size:14px; color:#666; margin:0 0 20px 0; text-align:center; line-height:1.6;">Te tenemos una <span style="font-weight:bold; color:#85c440;">oferta especial de fin de año</span> que no puedes dejar pasar.</p>
+                    <h2 style="font-size:28px; font-weight:bold; color:#333; margin:0 0 16px 0; text-align:center;">Parabens</h2>
+                    <p style="font-size:16px; color:#666; margin:0 0 20px 0; text-align:center; line-height:1.6; font-weight:500;">Você acaba de ganhar um desconto especial de fim de ano.</p>
                     
-                    <div style="background:#f0f8ff; border-left:4px solid #85c440; padding:16px; border-radius:8px; margin-bottom:20px; text-align:center;">
-                        <p style="font-size:12px; color:#666; margin:0 0 8px 0;">Tu Receta Personalizada:</p>
+                    <div style="text-align:center; margin-bottom:20px;">
+                        <p style="font-size:18px; color:#333; margin:0 0 12px 0; font-weight:bold;">Garanta sua receita personalizada agora mesmo</p>
                         <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin:8px 0;">
-                            <span style="font-size:18px; color:#999; text-decoration:line-through;">$17</span>
-                            <span style="font-size:32px; font-weight:bold; color:#85c440;">$9,90</span>
+                            <span style="font-size:24px; color:#999; text-decoration:line-through;">$17</span>
+                            <span style="font-size:40px; font-weight:bold; color:#85c440;">$9,90</span>
                         </div>
-                        <p style="font-size:11px; color:#85c440; font-weight:bold; margin:8px 0 0 0;">¡41% de descuento!</p>
+                        <p style="font-size:14px; color:#85c440; font-weight:bold; margin:8px 0 0 0;">41% de desconto!</p>
                     </div>
                     
-                    <button id="exit-popup-buy" style="width:100%; background:#85c440; color:white; border:none; padding:14px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; margin-bottom:12px; transition:background 0.3s;">COMPRAR AHORA - $9,90</button>
+                    <p style="font-size:12px; color:#d32f2f; text-align:center; margin:0 0 16px 0; font-weight:600;">Oferta exclusiva. Se fechar essa pagina, nunca mais verá essa oferta.</p>
                     
-                    <button id="exit-popup-close" style="width:100%; background:#f0f0f0; color:#333; border:none; padding:12px; border-radius:8px; font-size:14px; cursor:pointer; transition:background 0.3s;">No, gracias. Salir</button>
+                    <button id="exit-popup-buy" style="width:100%; background:#85c440; color:white; border:none; padding:14px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; margin-bottom:12px; transition:background 0.3s;">Sim, quero minha receita personalizada agora</button>
                     
-                    <p style="font-size:11px; color:#999; text-align:center; margin:12px 0 0 0;">✓ Pago seguro | ✓ Garantía de 7 días | ✓ Soporte 24/7</p>
+                    <button id="exit-popup-close" style="width:100%; background:#f0f0f0; color:#333; border:none; padding:12px; border-radius:8px; font-size:14px; cursor:pointer; transition:background 0.3s;">Nao, obrigado. Prefiro perder essa oportunidade</button>
+                </div>
+            </div>
+            
+            <div id="exit-popup-overlay-2" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:9999; animation:fadeIn 0.3s ease-in;">
+                <div id="exit-popup-2" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; border-radius:16px; padding:24px; max-width:90%; width:400px; box-shadow:0 20px 60px rgba(0,0,0,0.3); z-index:10000; animation:slideIn 0.3s ease-out;">
+                    <h2 style="font-size:28px; font-weight:bold; color:#d32f2f; margin:0 0 16px 0; text-align:center;">Essa é sua última chance!</h2>
+                    <p style="font-size:16px; color:#666; margin:0 0 20px 0; text-align:center; line-height:1.6; font-weight:500;">Não oferecemos essa promoção para muitas pessoas. Se você sair agora, essa oportunidade será perdida para sempre.</p>
+                    
+                    <div style="text-align:center; margin-bottom:20px;">
+                        <p style="font-size:18px; color:#333; margin:0 0 12px 0; font-weight:bold;">Garanta sua receita personalizada agora mesmo</p>
+                        <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin:8px 0;">
+                            <span style="font-size:24px; color:#999; text-decoration:line-through;">$17</span>
+                            <span style="font-size:40px; font-weight:bold; color:#d32f2f;">$4,99</span>
+                        </div>
+                        <p style="font-size:14px; color:#d32f2f; font-weight:bold; margin:8px 0 0 0;">71% de desconto!</p>
+                    </div>
+                    
+                    <p style="font-size:12px; color:#d32f2f; text-align:center; margin:0 0 16px 0; font-weight:600;">Essa é realmente a última oferta. Clique agora antes que seja tarde.</p>
+                    
+                    <button id="exit-popup-buy-2" style="width:100%; background:#d32f2f; color:white; border:none; padding:14px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; margin-bottom:12px; transition:background 0.3s;">Sim, quero minha receita personalizada agora - $4,99</button>
+                    
+                    <button id="exit-popup-close-2" style="width:100%; background:#f0f0f0; color:#333; border:none; padding:12px; border-radius:8px; font-size:14px; cursor:pointer; transition:background 0.3s;">Não, obrigado</button>
                 </div>
             </div>
             <style>
@@ -745,10 +767,29 @@
         
         if (closeBtn) {
             closeBtn.onclick = () => {
-                console.log('User closed popup, exiting');
-                exitPopupShown = false;
-                const overlay = document.getElementById('exit-popup-overlay');
-                if (overlay) overlay.style.display = 'none';
+                console.log('User closed first popup, showing second chance popup');
+                const overlay1 = document.getElementById('exit-popup-overlay');
+                if (overlay1) overlay1.style.display = 'none';
+                const overlay2 = document.getElementById('exit-popup-overlay-2');
+                if (overlay2) overlay2.style.display = 'block';
+            };
+        }
+        
+        const buyBtn2 = document.getElementById('exit-popup-buy-2');
+        const closeBtn2 = document.getElementById('exit-popup-close-2');
+        
+        if (buyBtn2) {
+            buyBtn2.onclick = () => {
+                console.log('Redirect to second checkout');
+                window.location.href = 'https://pay.hotmart.com/I103092154N?off=7q8moe64&checkoutMode=10';
+            };
+        }
+        
+        if (closeBtn2) {
+            closeBtn2.onclick = () => {
+                console.log('User declined both offers, exiting');
+                const overlay2 = document.getElementById('exit-popup-overlay-2');
+                if (overlay2) overlay2.style.display = 'none';
                 setTimeout(() => {
                     window.history.back();
                 }, 100);
