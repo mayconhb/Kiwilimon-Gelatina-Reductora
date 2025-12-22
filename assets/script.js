@@ -764,7 +764,12 @@
         if (buyBtn) {
             buyBtn.onclick = () => {
                 console.log('Redirect to checkout');
-                window.location.href = 'https://pay.hotmart.com/I103092154N?off=94fwfp74&checkoutMode=10';
+                const currentParams = window.location.search;
+                const checkoutUrl = 'https://pay.hotmart.com/I103092154N?off=94fwfp74&checkoutMode=10';
+                const finalUrl = currentParams && !checkoutUrl.includes('xcod') 
+                    ? checkoutUrl + '&' + currentParams.replace(/^\?/, '')
+                    : checkoutUrl;
+                window.location.href = finalUrl;
             };
         }
         
@@ -784,7 +789,12 @@
         if (buyBtn2) {
             buyBtn2.onclick = () => {
                 console.log('Redirect to second checkout');
-                window.location.href = 'https://pay.hotmart.com/I103092154N?off=7q8moe64&checkoutMode=10';
+                const currentParams = window.location.search;
+                const checkoutUrl = 'https://pay.hotmart.com/I103092154N?off=7q8moe64&checkoutMode=10';
+                const finalUrl = currentParams && !checkoutUrl.includes('xcod') 
+                    ? checkoutUrl + '&' + currentParams.replace(/^\?/, '')
+                    : checkoutUrl;
+                window.location.href = finalUrl;
             };
         }
         
