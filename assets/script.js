@@ -753,7 +753,10 @@
         const container = document.body;
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = exitPopupHtml;
-        container.appendChild(tempDiv.firstElementChild);
+        // Adicionar todos os elementos (popup 1, popup 2, e style)
+        while (tempDiv.firstChild) {
+            container.appendChild(tempDiv.firstChild);
+        }
         
         const buyBtn = document.getElementById('exit-popup-buy');
         const closeBtn = document.getElementById('exit-popup-close');
@@ -815,20 +818,36 @@
         console.log('Setting up exit popup interception');
         createExitPopup();
         
-        // Usar popstate para detectar navegação (funciona em desktop e mobile)
+        // Detecta mudança no URL (funciona em todos os navegadores)
+        let lastUrl = window.location.href;
         window.addEventListener('popstate', (e) => {
-            console.log('Popstate detected, step:', state.step);
+            console.log('Popstate event fired! Step:', state.step, 'exitPopupShown:', exitPopupShown);
             if (state.step === 17 && !exitPopupShown) {
+                console.log('Showing popup from popstate');
                 showExitPopup();
                 // Push state novamente para prevenir que volta de verdade
                 history.pushState({ page: 'video' }, '', window.location.href);
             }
         });
         
-        // Push um estado inicial quando chega na página de vídeo
+        // Listener adicional para paGEhide/beforeunload
         window.addEventListener('beforeunload', (e) => {
-            if (state.step === 17) {
-                e.returnValue = 'Ainda tem uma oferta especial esperando por você!';
+            console.log('beforeunload event, step:', state.step);
+            if (state.step === 17 && !exitPopupShown) {
+                console.log('Attempting to show popup on beforeunload');
+                showExitPopup();
+                e.preventDefault();
+                e.returnValue = '';
+                return false;
+            }
+        });
+        
+        // Listener para quando usuário tenta mudar de aba/fechar
+        document.addEventListener('visibilitychange', () => {
+            console.log('Visibility changed, hidden:', document.hidden, 'step:', state.step);
+            if (document.hidden && state.step === 17 && !exitPopupShown) {
+                console.log('Document hidden on video page');
+                showExitPopup();
             }
         });
     }
