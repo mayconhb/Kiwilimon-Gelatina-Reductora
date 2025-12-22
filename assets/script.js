@@ -548,12 +548,13 @@
                 trackCompletion();
                 content = `
                     <div class="py-4 text-center">
+                    <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js", s.async=!0,document.head.appendChild(s); </script>
                     <h3 class="text-lg font-bold text-gray-800 mb-4 uppercase leading-snug">
                         MIRA ESTE VIDEO DONDE LA DRA. PATRICIA FERNANDEZ EXPLICA CÓMO USAR TU RECETA Y CÓMO ACCESARLA
                     </h3>
-                    <div id="ifr_69432bd756803cfbd7054996_wrapper" style="margin: 0 auto; width: 100%; max-width: 400px;">
-                        <div style="position: relative; padding: 152.59259259259258% 0 0 0;" id="ifr_69432bd756803cfbd7054996_aspect">
-                            <iframe frameborder="0" allowfullscreen src="about:blank" id="ifr_69432bd756803cfbd7054996" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" referrerpolicy="origin" onload="this.onload=null, this.src='https://scripts.converteai.net/32feb844-35ec-4ff2-a2f5-d9b02098dece/players/69432bd756803cfbd7054996/v4/embed.html'+(location.search||'?')+'&vl='+encodeURIComponent(location.href)"></iframe>
+                    <div id="ifr_6948b2e72329c8edaeacf0ff_wrapper" style="margin: 0 auto; width: 100%; max-width: 400px;">
+                        <div style="position: relative; padding: 152.59259259259258% 0 0 0;" id="ifr_6948b2e72329c8edaeacf0ff_aspect">
+                            <iframe frameborder="0" allowfullscreen src="about:blank" id="ifr_6948b2e72329c8edaeacf0ff" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" referrerpolicy="origin" onload=" this.onload=null, this.src='https://scripts.converteai.net/32feb844-35ec-4ff2-a2f5-d9b02098dece/players/6948b2e72329c8edaeacf0ff/v4/embed.html' +(location.search||'?') +'&vl=' +encodeURIComponent(location.href)"></iframe>
                         </div>
                     </div>
                     <a id="cta-button" href="https://pay.hotmart.com/I103092154N?off=8pqi3d4c&checkoutMode=10" class="mt-6 w-full bg-kiwi-green text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-kiwi-dark-green transition-all flex items-center justify-center gap-2 uppercase text-sm" style="display:none;">
@@ -586,23 +587,23 @@
             let lastUpdateTime = null;
             let isPlaying = false;
             
-            window.addEventListener('message', function handleVturbMessage(event) {
+            window.addEventListener('message', function handleVideoMessage(event) {
                 if (buttonShown) return;
                 
                 try {
                     const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
                     
-                    // Detectar eventos de play/pause da VTurb
+                    // Detectar eventos de play/pause do video player (Converteai)
                     if (data.type === 'play' || data.type === 'playing' || data.event === 'play' || data.event === 'playing') {
                         isPlaying = true;
                         lastUpdateTime = Date.now();
-                        console.log('VTurb: Video started playing');
+                        console.log('Video: Started playing');
                     }
                     
                     if (data.type === 'pause' || data.event === 'pause') {
                         isPlaying = false;
                         lastUpdateTime = null;
-                        console.log('VTurb: Video paused. Total watched:', accumulatedWatchTime.toFixed(1), 's');
+                        console.log('Video: Paused. Total watched:', accumulatedWatchTime.toFixed(1), 's');
                     }
                     
                     // Evento de timeupdate - acumular tempo apenas se o vídeo está tocando
@@ -613,7 +614,7 @@
                         if (lastUpdateTime === null) {
                             isPlaying = true;
                             lastUpdateTime = now;
-                            console.log('VTurb: First timeupdate, assuming video is playing');
+                            console.log('Video: First timeupdate, assuming video is playing');
                         }
                         
                         // Acumular tempo apenas se o vídeo está tocando
@@ -626,16 +627,16 @@
                             lastUpdateTime = now;
                         }
                         
-                        console.log('VTurb watched:', accumulatedWatchTime.toFixed(1), 's');
+                        console.log('Video watched:', accumulatedWatchTime.toFixed(1), 's');
                         
-                        if (accumulatedWatchTime >= 490) {
+                        if (accumulatedWatchTime >= 10) {
                             buttonShown = true;
                             const ctaButton = document.getElementById('cta-button');
                             if (ctaButton) {
                                 ctaButton.style.display = 'flex';
                             }
-                            console.log('VTurb: Button shown after 10 seconds of watch time');
-                            window.removeEventListener('message', handleVturbMessage);
+                            console.log('Video: Button shown after watching the video');
+                            window.removeEventListener('message', handleVideoMessage);
                         }
                     }
                 } catch (e) {}
