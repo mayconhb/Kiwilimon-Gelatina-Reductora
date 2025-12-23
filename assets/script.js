@@ -694,7 +694,7 @@
                             <span style="font-size:22px; color:#999; text-decoration:line-through;">$9,90</span>
                             <span style="font-size:48px; font-weight:bold; color:#85c440;">$4,99</span>
                         </div>
-                        <p style="font-size:14px; color:#85c440; font-weight:bold; margin:8px 0 0 0;">49% de desconto!</p>
+                        <p style="font-size:14px; color:#85c440; font-weight:bold; margin:8px 0 0 0;">49% de descuento!</p>
                     </div>
                     
                     <p style="font-size:12px; color:#d32f2f; text-align:center; margin:0 0 16px 0; font-weight:600;">⚠️ Oferta exclusiva. Si cierras esta página, nunca más verás esta oferta.</p>
