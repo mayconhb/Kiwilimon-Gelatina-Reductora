@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oferta Exclusiva - Gelatina Reductora</title>
+    
+    <!-- Preconnect para recursos externos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #85c440 0%, #6da530 100%);
+            color: #333;
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            background: linear-gradient(135deg, #85c440 0%, #6da530 100%);
+            color: white;
+            margin: -20px -20px 30px -20px;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+        }
+        
+        .header p {
+            font-size: 16px;
+            margin: 0;
+            opacity: 0.95;
+        }
+        
+        .offer-intro {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 12px;
+        }
+        
+        .offer-intro strong {
+            display: block;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .offer-intro p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+            font-style: italic;
+        }
+        
+        .products-section {
+            margin: 30px 0;
+        }
+        
+        .product-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: center;
+        }
+        
+        .product-image {
+            width: 90px;
+            height: 120px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-details {
+            flex: 1;
+        }
+        
+        .product-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+        
+        .product-prices {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .product-original {
+            font-size: 14px;
+            color: #999;
+            text-decoration: line-through;
+        }
+        
+        .product-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #85c440;
+        }
+        
+        .product-offer {
+            font-size: 12px;
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #666;
+        }
+        
+        .pack-image {
+            text-align: center;
+            margin: 35px 0;
+        }
+        
+        .pack-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        
+        .summary {
+            text-align: center;
+            padding: 20px;
+            background: #f0fdf4;
+            border: 2px solid #85c440;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .summary h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #85c440;
+            margin: 0 0 10px 0;
+        }
+        
+        .summary p {
+            font-size: 14px;
+            color: #333;
+            margin: 0;
+        }
+        
+        .exclusive-message {
+            text-align: center;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 10px;
+            margin: 25px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .exclusive-message p {
+            font-size: 13px;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .cta-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #85c440 0%, #6da530 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:active {
+            transform: translateY(0);
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-link a {
+            color: #85c440;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .product-item {
+                gap: 12px;
+            }
+            
+            .product-image {
+                width: 75px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>¡Felicidades!</h1>
+            <p>La Receta de la Gelatina Reductora ya es tuya</p>
+            <p style="font-size: 13px; margin-top: 15px;">En los próximos minutos recibirás un correo electrónico para acceder a tu receta</p>
+        </div>
+        
+        <!-- Offer Intro -->
+        <div class="offer-intro">
+            <strong>97% de las mujeres que tuvieron resultados rápidos con la receta también llevaron este pack promocional</strong>
+            <p>Potencia tus resultados con nuestros 3 productos adelgazantes premium</p>
+        </div>
+        
+        <!-- Products -->
+        <div class="products-section">
+            <!-- Product 1: 20 Tés -->
+            <div class="product-item">
+                <div class="product-image">
+                    <img src="../assets/media/20-tes.png" alt="20 Tés Adelgazantes">
+                </div>
+                <div class="product-details">
+                    <h4 class="product-title">20 Tés Adelgazantes</h4>
+                    <div class="product-prices">
+                        <span class="product-original">$47</span>
+                        <span class="product-offer">Ahora GRATIS</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 2: Protocolo -->
+            <div class="product-item">
+                <div class="product-image">
+                    <img src="../assets/media/protocolo-desinflamacion.png" alt="Protocolo de Desinflamación">
+                </div>
+                <div class="product-details">
+                    <h4 class="product-title">Protocolo de Desinflamación de 7 Días</h4>
+                    <div class="product-prices">
+                        <span class="product-original">$27</span>
+                        <span class="product-offer">Ahora GRATIS</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 3: Reset Hormonal -->
+            <div class="product-item">
+                <div class="product-image">
+                    <img src="../assets/media/reset-hormonal.png" alt="Reset Hormonal">
+                </div>
+                <div class="product-details">
+                    <h4 class="product-title">Reset Hormonal para Menopausia</h4>
+                    <div class="product-prices">
+                        <span class="product-original">$97</span>
+                        <span class="product-price">Ahora $9,90</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pack Image -->
+        <div class="pack-image">
+            <img src="../assets/media/pack.png" alt="Pack Completo">
+        </div>
+        
+        <!-- Summary -->
+        <div class="summary">
+            <h3>3 Productos por el Precio de 1</h3>
+            <p>Valor total: $171 → Ahora solo $9,90</p>
+        </div>
+        
+        <!-- Exclusive Message -->
+        <div class="exclusive-message">
+            <p>⭐ <strong>Oferta EXCLUSIVA</strong> para ti que ya diste el primer paso y adquiriste tu receta personalizada de la Gelatina Reductora</p>
+        </div>
+        
+        <!-- CTA Button -->
+        <button class="cta-button" onclick="handleCheckout()">
+            Aprovechar Oferta Ahora - $9,90
+        </button>
+        
+        <!-- Back Link -->
+        <div class="back-link">
+            <a href="javascript:history.back()">Volver a mi receta</a>
+        </div>
+    </div>
+    
+    <script>
+        function handleCheckout() {
+            // Get URL parameters from current page
+            const currentParams = window.location.search;
+            const checkoutUrl = 'https://pay.hotmart.com/I103092154N?off=7q8moe64&checkoutMode=10';
+            
+            let finalUrl = checkoutUrl;
+            if (currentParams && !checkoutUrl.includes('xcod')) {
+                finalUrl = checkoutUrl + '&' + currentParams.replace(/^\?/, '');
+            }
+            
+            window.location.href = finalUrl;
+        }
+    </script>
+</body>
+</html>
