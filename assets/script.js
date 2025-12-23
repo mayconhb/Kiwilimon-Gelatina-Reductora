@@ -840,26 +840,6 @@
             }
         });
         
-        // Listener adicional para paGEhide/beforeunload
-        window.addEventListener('beforeunload', (e) => {
-            console.log('beforeunload event, step:', state.step);
-            if (state.step === 17 && !exitPopupShown) {
-                console.log('Attempting to show popup on beforeunload');
-                showExitPopup();
-                e.preventDefault();
-                e.returnValue = '';
-                return false;
-            }
-        });
-        
-        // Listener para quando usuário tenta mudar de aba/fechar
-        document.addEventListener('visibilitychange', () => {
-            console.log('Visibility changed, hidden:', document.hidden, 'step:', state.step);
-            if (document.hidden && state.step === 17 && !exitPopupShown) {
-                console.log('Document hidden on video page');
-                showExitPopup();
-            }
-        });
     }
 
     // --- Template Helpers ---
