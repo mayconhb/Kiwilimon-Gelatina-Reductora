@@ -45,29 +45,25 @@
         }
         
         .header h1 {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             margin: 0 0 5px 0;
             line-height: 1.2;
         }
         
         .header p {
-            font-size: 14px;
+            font-size: 16px;
             margin: 0;
             opacity: 0.95;
         }
         
         .offer-intro {
-            text-align: center;
-            margin: 12px 0;
-            padding: 12px;
-            background: #f9f9f9;
-            border-radius: 10px;
+            display: none;
         }
         
         .offer-intro strong {
             display: block;
-            font-size: 15px;
+            font-size: 17px;
             color: #333;
             margin-bottom: 5px;
             line-height: 1.3;
@@ -75,10 +71,7 @@
         }
         
         .offer-intro p {
-            font-size: 13px;
-            color: #666;
-            margin: 0;
-            font-style: italic;
+            display: none;
         }
         
         .products-section {
@@ -144,10 +137,45 @@
         }
         
         .pack-image img {
-            max-width: 100%;
+            max-width: 70%;
             height: auto;
             border-radius: 0;
             box-shadow: none;
+        }
+        
+        .products-list {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        
+        .product-line {
+            text-align: center;
+            margin: 12px 0;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        .product-line strong {
+            font-weight: 600;
+        }
+        
+        .price-original {
+            text-decoration: line-through;
+            color: #999;
+            margin: 0 8px;
+        }
+        
+        .price-new {
+            color: #85c440;
+            font-weight: 700;
+        }
+        
+        .price-free {
+            color: #85c440;
+            font-weight: 700;
         }
         
         .summary {
@@ -160,7 +188,7 @@
         }
         
         .summary h3 {
-            font-size: 17px;
+            font-size: 20px;
             font-weight: 700;
             color: #85c440;
             margin: 0 0 4px 0;
@@ -168,7 +196,7 @@
         }
         
         .summary p {
-            font-size: 13px;
+            font-size: 16px;
             color: #333;
             margin: 0;
             font-weight: 500;
@@ -184,7 +212,7 @@
         }
         
         .exclusive-message p {
-            font-size: 12px;
+            font-size: 14px;
             color: #666;
             margin: 0;
             line-height: 1.4;
@@ -271,6 +299,25 @@
         <!-- Pack Image -->
         <div class="pack-image">
             <img src="../assets/media/pack.png" alt="Pack Completo">
+        </div>
+        
+        <!-- Products List -->
+        <div class="products-list">
+            <div class="product-line">
+                <strong>20 Tés Adelgazantes</strong> 
+                <span class="price-original">$47</span>
+                <span class="price-free">Ahora GRÁTIS</span>
+            </div>
+            <div class="product-line">
+                <strong>Protocolo de Desinflamación de 7 días</strong> 
+                <span class="price-original">$27</span>
+                <span class="price-free">Ahora GRÁTIS</span>
+            </div>
+            <div class="product-line">
+                <strong>Reset Hormonal para menopausa</strong> 
+                <span class="price-original">$97</span>
+                <span class="price-new">Ahora $17</span>
+            </div>
         </div>
         
         <!-- Products (Hidden) -->
