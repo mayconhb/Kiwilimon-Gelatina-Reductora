@@ -561,9 +561,9 @@
                     <h3 class="text-lg font-bold text-gray-800 mb-4 uppercase leading-snug">
                         MIRA ESTE VIDEO DONDE LA DRA. PATRICIA FERNANDEZ EXPLICA CÓMO USAR TU RECETA Y CÓMO ACCESARLA
                     </h3>
-                    <div id="ifr_6948b2e72329c8edaeacf0ff_wrapper" style="margin: 0 auto; width: 100%; max-width: 400px;">
-                        <div style="position: relative; padding: 152.59259259259258% 0 0 0;" id="ifr_6948b2e72329c8edaeacf0ff_aspect">
-                            <iframe frameborder="0" allowfullscreen src="about:blank" id="ifr_6948b2e72329c8edaeacf0ff" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" referrerpolicy="origin" onload=" this.onload=null, this.src='https://scripts.converteai.net/32feb844-35ec-4ff2-a2f5-d9b02098dece/players/6948b2e72329c8edaeacf0ff/v4/embed.html' +(location.search||'?') +'&vl=' +encodeURIComponent(location.href)"></iframe>
+                    <div id="ifr_69432bd756803cfbd7054996_wrapper" style="margin: 0 auto; width: 100%; max-width: 400px;">
+                        <div style="position: relative; padding: 152.59259259259258% 0 0 0;" id="ifr_69432bd756803cfbd7054996_aspect">
+                            <iframe frameborder="0" allowfullscreen src="about:blank" id="ifr_69432bd756803cfbd7054996" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" referrerpolicy="origin" onload=" this.onload=null, this.src='https://scripts.converteai.net/32feb844-35ec-4ff2-a2f5-d9b02098dece/players/69432bd756803cfbd7054996/v4/embed.html' +(location.search||'?') +'&vl=' +encodeURIComponent(location.href)"></iframe>
                         </div>
                     </div>
                     <a id="cta-button" href="https://pay.hotmart.com/I103092154N?off=8pqi3d4c&checkoutMode=10" class="mt-6 w-full bg-kiwi-green text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-kiwi-dark-green transition-all flex items-center justify-center gap-2 uppercase text-sm" style="display:none;">
@@ -692,9 +692,9 @@
                         <p style="font-size:16px; color:#333; margin:0 0 16px 0; font-weight:bold;">Asegura tu receta personalizada ahora mismo</p>
                         <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin:8px 0;">
                             <span style="font-size:22px; color:#999; text-decoration:line-through;">$17</span>
-                            <span style="font-size:48px; font-weight:bold; color:#85c440;">$9,90</span>
+                            <span style="font-size:48px; font-weight:bold; color:#85c440;">$4,99</span>
                         </div>
-                        <p style="font-size:14px; color:#85c440; font-weight:bold; margin:8px 0 0 0;">41% de desconto!</p>
+                        <p style="font-size:14px; color:#85c440; font-weight:bold; margin:8px 0 0 0;">71% de desconto!</p>
                     </div>
                     
                     <p style="font-size:12px; color:#d32f2f; text-align:center; margin:0 0 16px 0; font-weight:600;">⚠️ Oferta exclusiva. Si cierras esta página, nunca más verás esta oferta.</p>
@@ -705,27 +705,6 @@
                 </div>
             </div>
             
-            <div id="exit-popup-overlay-2" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:9999; animation:fadeIn 0.3s ease-in;">
-                <div id="exit-popup-2" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; border-radius:16px; padding:24px; max-width:90%; width:400px; box-shadow:0 20px 60px rgba(0,0,0,0.3); z-index:10000; animation:slideIn 0.3s ease-out;">
-                    <h2 style="font-size:28px; font-weight:bold; color:#d32f2f; margin:0 0 16px 0; text-align:center;">¡Esta es tu última oportunidad!</h2>
-                    <p style="font-size:16px; color:#666; margin:0 0 20px 0; text-align:center; line-height:1.6; font-weight:500;">No ofrecemos esta promoción a muchas personas. Si sales ahora, esta oportunidad se perderá para siempre.</p>
-                    
-                    <div style="text-align:center; margin-bottom:20px;">
-                        <p style="font-size:16px; color:#333; margin:0 0 16px 0; font-weight:bold;">Asegura tu receta personalizada ahora mismo</p>
-                        <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin:8px 0;">
-                            <span style="font-size:24px; color:#999; text-decoration:line-through;">$17</span>
-                            <span style="font-size:40px; font-weight:bold; color:#d32f2f;">$4,99</span>
-                        </div>
-                        <p style="font-size:14px; color:#d32f2f; font-weight:bold; margin:8px 0 0 0;">71% de desconto!</p>
-                    </div>
-                    
-                    <p style="font-size:12px; color:#d32f2f; text-align:center; margin:0 0 16px 0; font-weight:600;">⏰ Esta es realmente la última oferta. Haz clic ahora antes de que sea demasiado tarde.</p>
-                    
-                    <button id="exit-popup-buy-2" style="width:100%; background:#d32f2f; color:white; border:none; padding:14px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; margin-bottom:12px; transition:background 0.3s;">Sí, quiero mi receta personalizada ahora - $4,99</button>
-                    
-                    <button id="exit-popup-close-2" style="width:100%; background:#f0f0f0; color:#333; border:none; padding:12px; border-radius:8px; font-size:14px; cursor:pointer; transition:background 0.3s;">No, gracias</button>
-                </div>
-            </div>
             <style>
                 @keyframes fadeIn {
                     from { opacity:0; }
@@ -775,34 +754,9 @@
         
         if (closeBtn) {
             closeBtn.onclick = () => {
-                console.log('User closed first popup, showing second chance popup');
+                console.log('User declined offer, exiting');
                 const overlay1 = document.getElementById('exit-popup-overlay');
                 if (overlay1) overlay1.style.display = 'none';
-                const overlay2 = document.getElementById('exit-popup-overlay-2');
-                if (overlay2) overlay2.style.display = 'block';
-            };
-        }
-        
-        const buyBtn2 = document.getElementById('exit-popup-buy-2');
-        const closeBtn2 = document.getElementById('exit-popup-close-2');
-        
-        if (buyBtn2) {
-            buyBtn2.onclick = () => {
-                console.log('Redirect to second checkout');
-                const currentParams = window.location.search;
-                const checkoutUrl = 'https://pay.hotmart.com/I103092154N?off=7q8moe64&checkoutMode=10';
-                const finalUrl = currentParams && !checkoutUrl.includes('xcod') 
-                    ? checkoutUrl + '&' + currentParams.replace(/^\?/, '')
-                    : checkoutUrl;
-                window.location.href = finalUrl;
-            };
-        }
-        
-        if (closeBtn2) {
-            closeBtn2.onclick = () => {
-                console.log('User declined both offers, exiting');
-                const overlay2 = document.getElementById('exit-popup-overlay-2');
-                if (overlay2) overlay2.style.display = 'none';
                 setTimeout(() => {
                     window.history.back();
                 }, 100);
