@@ -131,6 +131,22 @@
             font-weight: 500;
         }
         
+        .offer-text {
+            text-align: center;
+            margin: 15px 0;
+            padding: 0;
+            background: transparent;
+            border-radius: 0;
+        }
+        
+        .offer-text p {
+            font-size: 16px;
+            color: #333;
+            margin: 0;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+        
         .pack-image {
             text-align: center;
             margin: 12px 0;
@@ -152,20 +168,26 @@
         
         .product-line {
             text-align: center;
-            margin: 12px 0;
+            margin: 16px 0;
             font-size: 16px;
             color: #333;
-            line-height: 1.4;
+            line-height: 1.6;
         }
         
         .product-line strong {
             font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+        }
+        
+        .product-prices {
+            display: block;
         }
         
         .price-original {
             text-decoration: line-through;
             color: #999;
-            margin: 0 8px;
+            margin-right: 8px;
         }
         
         .price-new {
@@ -296,6 +318,11 @@
             <p>Potencia tus resultados con nuestros 3 productos adelgazantes premium</p>
         </div>
         
+        <!-- Offer Text -->
+        <div class="offer-text">
+            <p>97% de las mujeres que tuvieron resultados rápidos con la receta también llevaron este pack promocional</p>
+        </div>
+        
         <!-- Pack Image -->
         <div class="pack-image">
             <img src="../assets/media/pack.png" alt="Pack Completo">
@@ -304,19 +331,25 @@
         <!-- Products List -->
         <div class="products-list">
             <div class="product-line">
-                <strong>20 Tés Adelgazantes</strong> 
-                <span class="price-original">$47</span>
-                <span class="price-free">Ahora GRÁTIS</span>
+                <strong>20 Tés Adelgazantes</strong>
+                <div class="product-prices">
+                    <span class="price-original">$47</span>
+                    <span class="price-free">Ahora GRÁTIS</span>
+                </div>
             </div>
             <div class="product-line">
-                <strong>Protocolo de Desinflamación de 7 días</strong> 
-                <span class="price-original">$27</span>
-                <span class="price-free">Ahora GRÁTIS</span>
+                <strong>Protocolo de Desinflamación de 7 días</strong>
+                <div class="product-prices">
+                    <span class="price-original">$27</span>
+                    <span class="price-free">Ahora GRÁTIS</span>
+                </div>
             </div>
             <div class="product-line">
-                <strong>Reset Hormonal para menopausa</strong> 
-                <span class="price-original">$97</span>
-                <span class="price-new">Ahora $17</span>
+                <strong>Reset Hormonal para menopausa</strong>
+                <div class="product-prices">
+                    <span class="price-original">$97</span>
+                    <span class="price-new">Ahora $17</span>
+                </div>
             </div>
         </div>
         
