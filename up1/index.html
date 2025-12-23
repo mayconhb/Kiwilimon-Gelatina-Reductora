@@ -86,25 +86,15 @@
         }
         
         .product-item {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 14px;
-            align-items: flex-start;
+            display: none;
         }
         
         .product-image {
-            width: 70px;
-            height: 95px;
-            flex-shrink: 0;
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            display: none;
         }
         
         .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            display: none;
         }
         
         .product-details {
@@ -156,8 +146,8 @@
         .pack-image img {
             max-width: 100%;
             height: auto;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 0;
+            box-shadow: none;
         }
         
         .summary {
@@ -202,46 +192,32 @@
         }
         
         .cta-button {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, #85c440 0%, #6da530 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            margin-top: 12px;
-            margin-bottom: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            display: none;
         }
         
         .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            display: none;
         }
         
         .cta-button:active {
-            transform: translateY(0);
+            display: none;
         }
         
         .back-link {
-            text-align: center;
-            margin-top: 8px;
-            padding-bottom: 10px;
+            display: none;
         }
         
         .back-link a {
-            color: #85c440;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 600;
+            display: none;
         }
         
         .back-link a:hover {
-            text-decoration: underline;
+            display: none;
+        }
+        
+        #hotmart-sales-funnel {
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
         
         @media (max-width: 480px) {
@@ -292,60 +268,20 @@
             <p>Potencia tus resultados con nuestros 3 productos adelgazantes premium</p>
         </div>
         
-        <!-- Products -->
-        <div class="products-section">
-            <!-- Product 1: 20 Tés -->
-            <div class="product-item">
-                <div class="product-image">
-                    <img src="../assets/media/20-tes.png" alt="20 Tés Adelgazantes">
-                </div>
-                <div class="product-details">
-                    <h4 class="product-title">20 Tés Adelgazantes</h4>
-                    <div class="product-prices">
-                        <span class="product-original">$47</span>
-                        <span class="product-offer">Ahora GRATIS</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Product 2: Protocolo -->
-            <div class="product-item">
-                <div class="product-image">
-                    <img src="../assets/media/protocolo-desinflamacion.png" alt="Protocolo de Desinflamación">
-                </div>
-                <div class="product-details">
-                    <h4 class="product-title">Protocolo de Desinflamación de 7 Días</h4>
-                    <div class="product-prices">
-                        <span class="product-original">$27</span>
-                        <span class="product-offer">Ahora GRATIS</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Product 3: Reset Hormonal -->
-            <div class="product-item">
-                <div class="product-image">
-                    <img src="../assets/media/reset-hormonal.png" alt="Reset Hormonal">
-                </div>
-                <div class="product-details">
-                    <h4 class="product-title">Reset Hormonal para Menopausia</h4>
-                    <div class="product-prices">
-                        <span class="product-original">$97</span>
-                        <span class="product-price">Ahora $9,90</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
         <!-- Pack Image -->
         <div class="pack-image">
             <img src="../assets/media/pack.png" alt="Pack Completo">
         </div>
         
+        <!-- Products (Hidden) -->
+        <div class="products-section">
+            <div class="product-item"></div>
+        </div>
+        
         <!-- Summary -->
         <div class="summary">
             <h3>3 Productos por el Precio de 1</h3>
-            <p>Valor total: $171 → Ahora solo $9,90</p>
+            <p>Valor total: $171 → Ahora solo $17</p>
         </div>
         
         <!-- Exclusive Message -->
@@ -353,29 +289,15 @@
             <p>⭐ <strong>Oferta EXCLUSIVA</strong> para ti que ya diste el primer paso y adquiriste tu receta personalizada de la Gelatina Reductora</p>
         </div>
         
-        <!-- CTA Button -->
-        <button class="cta-button" onclick="handleCheckout()">
-            Aprovechar Oferta Ahora - $9,90
-        </button>
-        
-        <!-- Back Link -->
-        <div class="back-link">
-            <a href="javascript:history.back()">Volver a mi receta</a>
-        </div>
+        <!-- HOTMART - Sales Funnel Widget -->
+        <div id="hotmart-sales-funnel"></div>
     </div>
     
+    <!-- HOTMART - script load and setup -->
+    <script src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"></script>
     <script>
-        function handleCheckout() {
-            // Get URL parameters from current page
-            const currentParams = window.location.search;
-            const checkoutUrl = 'https://pay.hotmart.com/I103092154N?off=7q8moe64&checkoutMode=10';
-            
-            let finalUrl = checkoutUrl;
-            if (currentParams && !checkoutUrl.includes('xcod')) {
-                finalUrl = checkoutUrl + '&' + currentParams.replace(/^\?/, '');
-            }
-            
-            window.location.href = finalUrl;
+        if (window.checkoutElements) {
+            checkoutElements.init('salesFunnel').mount('#hotmart-sales-funnel')
         }
     </script>
 </body>
